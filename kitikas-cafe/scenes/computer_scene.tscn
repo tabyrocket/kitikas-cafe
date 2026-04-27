@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://b8o83euwsde63"]
+
+[ext_resource type="Texture2D" uid="uid://cgl0tfdwidw1e" path="res://assets/backgrounds/mc_house.png" id="1_dwb1n"]
+[ext_resource type="Script" uid="uid://csds6r1du411x" path="res://scenes/computer_scene.gd" id="1_l5y6j"]
+[ext_resource type="Texture2D" uid="uid://6vyvhu40djox" path="res://assets/backgrounds/laptop_screen.png" id="3_5p0j4"]
+[ext_resource type="Texture2D" uid="uid://jcnvlkcv7lis" path="res://assets/backgrounds/laptop_email1.png" id="4_cdr88"]
+[ext_resource type="Texture2D" uid="uid://dgs7suelsvvbd" path="res://assets/backgrounds/laptop_email2.png" id="5_5fudp"]
+[ext_resource type="Texture2D" uid="uid://bt86jetb3xe66" path="res://assets/images/acceptance letter.jpg" id="6_cdr88"]
+[ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="6_r825j"]
+
+[node name="ComputerScene" type="Control" unique_id=481845899]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l5y6j")
+
+[node name="MCHouse" type="TextureRect" parent="." unique_id=840586204]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("1_dwb1n")
+
+[node name="LaptopScreen" type="TextureRect" parent="." unique_id=926243461]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_5p0j4")
+
+[node name="LaptopEmail1" type="TextureRect" parent="." unique_id=1810089630]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("4_cdr88")
+
+[node name="LaptopEmail2" type="TextureRect" parent="." unique_id=390325254]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("5_5fudp")
+
+[node name="AcceptanceLetter" type="TextureRect" parent="." unique_id=1225942270]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -415.79498
+offset_right = 859.2051
+offset_bottom = 1650.0
+grow_horizontal = 2
+scale = Vector2(0.655, 0.655)
+texture = ExtResource("6_cdr88")
+
+[node name="UI" parent="." unique_id=1332173803 instance=ExtResource("6_r825j")]
+
+[node name="DialogueCooldown" type="Timer" parent="." unique_id=1204236205]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="DialogueCooldown" to="." method="_on_dialogue_cooldown_timeout"]
+
+[editable path="UI"]

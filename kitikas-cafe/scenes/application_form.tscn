@@ -22,7 +22,7 @@ offset_left = -413.59998
 offset_right = 861.39996
 offset_bottom = 1650.0
 grow_horizontal = 2
-scale = Vector2(0.65, 0.65)
+scale = Vector2(0.655, 0.655)
 texture = ExtResource("1_k3dbd")
 
 [node name="NameField" type="LineEdit" parent="." unique_id=277191939]

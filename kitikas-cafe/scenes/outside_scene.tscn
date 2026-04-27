@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://dd4i5m3h14ajn"]
+
+[ext_resource type="Script" uid="uid://dixjt6wd7l2hg" path="res://scenes/outside_scene.gd" id="1_da3f0"]
+[ext_resource type="Texture2D" uid="uid://c0nj788fe3nuo" path="res://assets/backgrounds/kitikas_cafe_outside_zoomed.png" id="2_2yh6w"]
+[ext_resource type="Texture2D" uid="uid://bgf774w81d8bv" path="res://assets/backgrounds/kitikas_cafe_outside.png" id="2_omw1v"]
+[ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="2_u00qm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2yh6w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2yh6w"]
+bg_color = Color(0.43168142, 0.76105434, 0.3603322, 0.40392157)
+
+[node name="OutsideScene" type="Control" unique_id=1654282998]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_da3f0")
+
+[node name="Cafe" type="TextureRect" parent="." unique_id=2041613154]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_omw1v")
+stretch_mode = 6
+
+[node name="CafeSignButton" type="Button" parent="Cafe" unique_id=2039917333]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = 134.0
+offset_right = 64.0
+offset_bottom = 188.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2yh6w")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2yh6w")
+
+[node name="ZoomedInCafe" type="TextureRect" parent="." unique_id=1231207520]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_2yh6w")
+stretch_mode = 6
+
+[node name="UI" parent="." unique_id=1382519088 instance=ExtResource("2_u00qm")]
+
+[node name="Root" parent="UI" index="0" unique_id=1365279054]
+mouse_filter = 2
+
+[node name="JobChatboxTimer" type="Timer" parent="." unique_id=545673025]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="pressed" from="Cafe/CafeSignButton" to="." method="_on_cafe_sign_button_pressed"]
+[connection signal="timeout" from="JobChatboxTimer" to="." method="_on_job_chatbox_timer_timeout"]
+
+[editable path="UI"]

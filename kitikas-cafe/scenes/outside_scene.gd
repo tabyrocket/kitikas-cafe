@@ -7,6 +7,13 @@ extends Control
 @onready var chatbox_left: TextureRect = $UI/Root/ChatboxLeft
 @onready var dialogue: RichTextLabel = $UI/Root/ChatboxLeft/Dialogue
 
+var done: bool = false
+
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed and done == true:
+			get_tree().change_scene_to_file("res://scenes/application_form.tscn")
+
 func _ready() -> void:
 	zoomed_in_cafe.visible = false
 	chatbox_left.visible = false
@@ -20,3 +27,4 @@ func _on_cafe_sign_button_pressed() -> void:
 func _on_job_chatbox_timer_timeout() -> void:
 	dialogue.text = "MC: *shivers* S-should I try get a j*b...? I'll try apply I guess. Empl*yment can't be that bad, right?"
 	chatbox_left.visible = true
+	done = true

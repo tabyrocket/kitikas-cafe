@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://c5rlif2mm0s4p"]
+
+[ext_resource type="AudioStream" uid="uid://bfjesvde076f5" path="res://assets/sound/fassounds-cute-kids-lofi-447358.mp3" id="1_q5y64"]
+
+[node name="BGM" type="AudioStreamPlayer" unique_id=1422773717]
+stream = ExtResource("1_q5y64")
+autoplay = true
+bus = &"BGM"

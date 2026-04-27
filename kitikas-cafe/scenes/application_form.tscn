@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://dujy3pkf1fjf6"]
+
+[ext_resource type="Script" uid="uid://cohvqguq5pj7m" path="res://scenes/application_form.gd" id="1_acsx3"]
+[ext_resource type="Texture2D" uid="uid://dx0jg08ynpsf1" path="res://assets/images/applying form.jpg" id="1_k3dbd"]
+[ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="2_smwiq"]
+
+[node name="ApplicationForm" type="Control" unique_id=870412706]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_acsx3")
+
+[node name="Form" type="TextureRect" parent="." unique_id=662613252]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.53000003
+anchor_right = 0.53000003
+offset_left = -413.59998
+offset_right = 861.39996
+offset_bottom = 1650.0
+grow_horizontal = 2
+scale = Vector2(0.65, 0.65)
+texture = ExtResource("1_k3dbd")
+
+[node name="NameField" type="LineEdit" parent="." unique_id=277191939]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -259.0
+offset_top = 279.0
+offset_right = 310.0
+offset_bottom = 310.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Enter your name!"
+
+[node name="SignButton" type="Button" parent="." unique_id=1386160763]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 316.0
+offset_top = 279.0
+offset_right = 416.0
+offset_bottom = 310.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_smwiq")
+text = "Sign"
+
+[connection signal="pressed" from="SignButton" to="." method="_on_sign_button_pressed"]

@@ -15,10 +15,19 @@ run/main_scene="res://scenes/outside_scene.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="uid://yd46wtmd558w"
+
+[autoload]
+
+BGM="*uid://c5rlif2mm0s4p"
+Global="*uid://cfi676t1qascs"
+
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 
 [physics]

@@ -26,9 +26,14 @@ var dialogue_strings: Array = [
 
 func _input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed and current_image < (images.size() - 1) and can_move_on:
-			current_image += 1
-			update_img()
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			# If still typing, skip to end first
+			if ui.is_typing():
+				ui.typewriter_skip()
+			# Otherwise advance to next image
+			elif can_move_on and current_image < (images.size() - 1):
+				current_image += 1
+				update_img()
 
 func _ready() -> void:
 	images = [mc_house, laptop_screen, laptop_email_1, laptop_email_2, acceptance_letter]
@@ -44,11 +49,10 @@ func update_img() -> void:
 	for img in images:
 		img.visible = false
 	images[current_image].visible = true
-	
-	# Dialogue
-	speaker.text = Global.player_name
-	dialogue.text = dialogue_strings[current_image]
 
 func _on_dialogue_cooldown_timeout() -> void:
+	# Dialogue
+	speaker.text = Global.player_name
+	ui.typewriter(dialogue, dialogue_strings[current_image])
 	chatbox_left.visible = true
 	can_move_on = true

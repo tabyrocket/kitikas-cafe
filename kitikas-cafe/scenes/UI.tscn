@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cs7epgavvu7iv" path="res://assets/images/pausemenu.png" id="3_5en4g"]
 [ext_resource type="Texture2D" uid="uid://dii3c1jcw06g6" path="res://assets/images/pausebuttonmask.png" id="4_3wlde"]
 [ext_resource type="Texture2D" uid="uid://kol4nnje74b" path="res://assets/images/pausebutton.png" id="4_75u2n"]
+[ext_resource type="AudioStream" uid="uid://cao8iwey36p3y" path="res://assets/sound/animal-crossing-talking-made-with-Voicemod.mp3" id="7_xpksx"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3wlde"]
 texture = ExtResource("4_75u2n")
@@ -120,5 +121,9 @@ grow_vertical = 2
 texture = ExtResource("3_5en4g")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Babble" type="AudioStreamPlayer" parent="." unique_id=1053337612]
+stream = ExtResource("7_xpksx")
+bus = &"SFX"
 
 [connection signal="pressed" from="Root/PauseButton" to="." method="_on_pause_button_pressed"]

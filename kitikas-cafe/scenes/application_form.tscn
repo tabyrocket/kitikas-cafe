@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cohvqguq5pj7m" path="res://scenes/application_form.gd" id="1_acsx3"]
 [ext_resource type="Texture2D" uid="uid://dx0jg08ynpsf1" path="res://assets/images/applying form.jpg" id="1_k3dbd"]
 [ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="2_smwiq"]
+[ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="4_cktnt"]
 
 [node name="ApplicationForm" type="Control" unique_id=870412706]
 layout_mode = 3
@@ -18,8 +19,8 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.53000003
 anchor_right = 0.53000003
-offset_left = -413.59998
-offset_right = 861.39996
+offset_left = -491.60004
+offset_right = 783.39996
 offset_bottom = 1650.0
 grow_horizontal = 2
 scale = Vector2(0.655, 0.655)
@@ -32,9 +33,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -259.0
+offset_left = -337.00006
 offset_top = 279.0
-offset_right = 310.0
+offset_right = 232.0
 offset_bottom = 310.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -48,13 +49,20 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 316.0
+offset_left = 238.0
 offset_top = 279.0
-offset_right = 416.0
+offset_right = 338.0
 offset_bottom = 310.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_smwiq")
 text = "Sign"
 
+[node name="UI" parent="." unique_id=1332173803 instance=ExtResource("4_cktnt")]
+
+[node name="Root" parent="UI" index="0" unique_id=1365279054]
+mouse_filter = 0
+
 [connection signal="pressed" from="SignButton" to="." method="_on_sign_button_pressed"]
+
+[editable path="UI"]

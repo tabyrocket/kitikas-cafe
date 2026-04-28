@@ -9,6 +9,8 @@ extends Control
 @onready var acceptance_letter: TextureRect = $AcceptanceLetter
 @onready var dialogue_cooldown: Timer = $DialogueCooldown
 @onready var dialogue: RichTextLabel = $UI/Root/ChatboxLeft/Dialogue
+@onready var speaker: RichTextLabel = $UI/Root/ChatboxLeft/Speaker
+@onready var chatbox_left: TextureRect = $UI/Root/ChatboxLeft
 
 var can_move_on: bool = false
 var current_image: int = 0
@@ -30,12 +32,11 @@ func _input(event):
 
 func _ready() -> void:
 	images = [mc_house, laptop_screen, laptop_email_1, laptop_email_2, acceptance_letter]
-	ui.visible = false
 	update_img()
 	
 
 func update_img() -> void:
-	ui.visible = false
+	chatbox_left.visible = false
 	can_move_on = false
 	dialogue_cooldown.start()
 	
@@ -45,8 +46,9 @@ func update_img() -> void:
 	images[current_image].visible = true
 	
 	# Dialogue
-	dialogue.text = Global.player_name + ": " + dialogue_strings[current_image]
+	speaker.text = Global.player_name
+	dialogue.text = dialogue_strings[current_image]
 
 func _on_dialogue_cooldown_timeout() -> void:
-	ui.visible = true
+	chatbox_left.visible = true
 	can_move_on = true

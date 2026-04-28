@@ -6,6 +6,7 @@ extends Control
 @onready var job_chatbox_timer: Timer = $JobChatboxTimer
 @onready var chatbox_left: TextureRect = $UI/Root/ChatboxLeft
 @onready var dialogue: RichTextLabel = $UI/Root/ChatboxLeft/Dialogue
+@onready var speaker: RichTextLabel = $UI/Root/ChatboxLeft/Speaker
 
 var done: bool = false
 
@@ -25,6 +26,7 @@ func _on_cafe_sign_button_pressed() -> void:
 
 
 func _on_job_chatbox_timer_timeout() -> void:
-	dialogue.text = "MC: *shivers* S-should I try get a j*b...? I'll try apply I guess. Empl*yment can't be that bad, right?"
+	speaker.text = "MC"
+	dialogue.text = "*shivers* S-should I try get a j*b...? I'll try apply I guess. Empl*yment can't be that bad, right?"
 	chatbox_left.visible = true
 	done = true

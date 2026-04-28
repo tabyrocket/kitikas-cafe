@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dx0jg08ynpsf1" path="res://assets/images/applying form.jpg" id="1_k3dbd"]
 [ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="2_smwiq"]
 [ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="4_cktnt"]
+[ext_resource type="Texture2D" uid="uid://kttxpxn3fa7x" path="res://assets/backgrounds/twodayslater.png" id="4_makio"]
 
 [node name="ApplicationForm" type="Control" unique_id=870412706]
 layout_mode = 3
@@ -58,11 +59,25 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_smwiq")
 text = "Sign"
 
+[node name="TwoDaysLater" type="TextureRect" parent="." unique_id=1521026455]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_makio")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TwoDaysTimer" type="Timer" parent="." unique_id=261015412]
+wait_time = 3.0
+one_shot = true
+
 [node name="UI" parent="." unique_id=1332173803 instance=ExtResource("4_cktnt")]
 
-[node name="Root" parent="UI" index="0" unique_id=1365279054]
-mouse_filter = 0
-
 [connection signal="pressed" from="SignButton" to="." method="_on_sign_button_pressed"]
+[connection signal="timeout" from="TwoDaysTimer" to="." method="_on_two_days_timer_timeout"]
 
 [editable path="UI"]

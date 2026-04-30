@@ -62,7 +62,7 @@ scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_2yh6w")
 stretch_mode = 6
 
-[node name="UI" parent="." unique_id=1382519088 instance=ExtResource("2_u00qm")]
+[node name="UI" parent="." unique_id=1332173803 instance=ExtResource("2_u00qm")]
 
 [node name="JobChatboxTimer" type="Timer" parent="." unique_id=545673025]
 wait_time = 0.5
@@ -70,5 +70,3 @@ one_shot = true
 
 [connection signal="pressed" from="Cafe/CafeSignButton" to="." method="_on_cafe_sign_button_pressed"]
 [connection signal="timeout" from="JobChatboxTimer" to="." method="_on_job_chatbox_timer_timeout"]
-
-[editable path="UI"]

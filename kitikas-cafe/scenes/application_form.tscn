@@ -79,5 +79,3 @@ one_shot = true
 
 [connection signal="pressed" from="SignButton" to="." method="_on_sign_button_pressed"]
 [connection signal="timeout" from="TwoDaysTimer" to="." method="_on_two_days_timer_timeout"]
-
-[editable path="UI"]

@@ -12,6 +12,14 @@
 [ext_resource type="Texture2D" uid="uid://cfho4sdaviky0" path="res://assets/images/buttons/pausemenubuttons_exit.png" id="9_7paak"]
 [ext_resource type="Texture2D" uid="uid://mv2m70lwqjc8" path="res://assets/images/buttons/backbutton.png" id="10_aputy"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aputy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7paak"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s2m3y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4dthu"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3wlde"]
 texture = ExtResource("4_75u2n")
 
@@ -97,6 +105,19 @@ theme_override_font_sizes/normal_font_size = 200
 text = "MC"
 horizontal_alignment = 1
 
+[node name="DialogueButton" type="Button" parent="Root/ChatboxLeft" unique_id=767864699]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 433.3335
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_aputy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_7paak")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_s2m3y")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_4dthu")
+
 [node name="PauseButton" type="Button" parent="Root" unique_id=14218684]
 layout_mode = 1
 anchors_preset = 5
@@ -112,6 +133,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_xpksx")
 expand_icon = true
 
 [node name="PauseMenu" type="ColorRect" parent="Root" unique_id=835598879]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -202,12 +224,14 @@ icon = ExtResource("9_7paak")
 icon_alignment = 1
 
 [node name="SettingsMenu" type="ColorRect" parent="Root" unique_id=1822069473]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.90588236, 0.74509805, 0.74509805, 1)
 
 [node name="MenuBG" type="TextureRect" parent="Root/SettingsMenu" unique_id=2107985633]

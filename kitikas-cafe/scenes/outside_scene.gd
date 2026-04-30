@@ -11,19 +11,18 @@ extends Control
 
 var done: bool = false
 
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			# Skip typewriter if still typing
-			if ui.is_typing():
-				ui.typewriter_skip()
-				return
-			if done == true:
-				get_tree().change_scene_to_file("res://scenes/application_form.tscn")
+func _on_dialogue_button_pressed():
+	# Skip typewriter if still typing
+	if ui.is_typing():
+		ui.typewriter_skip()
+		return
+	if done == true:
+		get_tree().change_scene_to_file("res://scenes/application_form.tscn")
 
 func _ready() -> void:
 	zoomed_in_cafe.visible = false
 	chatbox_left.visible = false
+	ui.get_node("Root/ChatboxLeft/DialogueButton").pressed.connect(_on_dialogue_button_pressed)
 
 
 func _on_cafe_sign_button_pressed() -> void:

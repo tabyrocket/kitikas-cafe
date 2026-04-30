@@ -24,20 +24,19 @@ var dialogue_strings: Array = [
 ]
 
 
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			# If still typing, skip to end first
-			if ui.is_typing():
-				ui.typewriter_skip()
-			# Otherwise advance to next image
-			elif can_move_on and current_image < (images.size() - 1):
-				current_image += 1
-				update_img()
+func _on_dialogue_button_pressed():
+	# If still typing, skip to end first
+	if ui.is_typing():
+		ui.typewriter_skip()
+	# Otherwise advance to next image
+	elif can_move_on and current_image < (images.size() - 1):
+		current_image += 1
+		update_img()
 
 func _ready() -> void:
 	images = [mc_house, laptop_screen, laptop_email_1, laptop_email_2, acceptance_letter]
 	update_img()
+	ui.get_node("Root/ChatboxLeft/DialogueButton").pressed.connect(_on_dialogue_button_pressed)
 	
 
 func update_img() -> void:

@@ -4,5 +4,6 @@
 
 [node name="BGM" type="AudioStreamPlayer" unique_id=1422773717]
 stream = ExtResource("1_q5y64")
+volume_db = -20.982
 autoplay = true
 bus = &"BGM"

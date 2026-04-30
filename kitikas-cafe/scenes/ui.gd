@@ -3,6 +3,15 @@ extends CanvasLayer
 @onready var pause_menu: ColorRect = $Root/PauseMenu
 @onready var chatbox_left: TextureRect = $Root/ChatboxLeft
 @onready var babble: AudioStreamPlayer = $Babble
+@onready var settings_menu: ColorRect = $Root/SettingsMenu
+
+@onready var mast_vol_slider: HSlider = $Root/SettingsMenu/MenuBG/VBoxContainer/VBoxContainer/MastVolSlider
+@onready var music_vol_slider: HSlider = $Root/SettingsMenu/MenuBG/VBoxContainer/VBoxContainer2/MusicVolSlider
+@onready var sfx_vol_slider: HSlider = $Root/SettingsMenu/MenuBG/VBoxContainer/VBoxContainer3/SFXVolSlider
+
+var master_bus_index: int
+var music_bus_index: int
+var sfx_bus_index: int
 
 # Typewriter state
 var _tw_target: RichTextLabel = null
@@ -16,12 +25,28 @@ const TYPEWRITER_SPEED: float = 0.02  # seconds per character
 func _ready() -> void:
 	chatbox_left.visible = false
 	pause_menu.visible = false
+	settings_menu.visible = false
 
 	# Create the typewriter timer
 	_tw_timer = Timer.new()
 	_tw_timer.one_shot = true
 	_tw_timer.timeout.connect(_on_typewriter_tick)
 	add_child(_tw_timer)
+
+	master_bus_index = AudioServer.get_bus_index("Master")
+	music_bus_index = AudioServer.get_bus_index("BGM")
+	sfx_bus_index = AudioServer.get_bus_index("SFX")
+
+	mast_vol_slider.value_changed.connect(_on_master_volume_changed)
+	music_vol_slider.value_changed.connect(_on_music_volume_changed)
+	sfx_vol_slider.value_changed.connect(_on_sfx_volume_changed)
+
+	if master_bus_index >= 0:
+		mast_vol_slider.value = db_to_linear(AudioServer.get_bus_volume_db(master_bus_index)) * 100.0
+	if music_bus_index >= 0:
+		music_vol_slider.value = db_to_linear(AudioServer.get_bus_volume_db(music_bus_index)) * 100.0
+	if sfx_bus_index >= 0:
+		sfx_vol_slider.value = db_to_linear(AudioServer.get_bus_volume_db(sfx_bus_index)) * 100.0
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
@@ -86,3 +111,31 @@ func _on_typewriter_tick() -> void:
 		if _tw_on_done.is_valid():
 			_tw_on_done.call()
 		_tw_on_done = Callable()
+
+
+func _on_resume_game_button_pressed() -> void:
+	pause_menu.visible = not pause_menu.visible
+
+
+func _on_exit_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+
+func _on_settings_button_pressed() -> void:
+	settings_menu.visible = true
+
+
+func _on_back_button_pressed() -> void:
+	settings_menu.visible = false
+
+func _on_master_volume_changed(value: float) -> void:
+	if master_bus_index >= 0:
+		AudioServer.set_bus_volume_db(master_bus_index, linear_to_db(value / 100.0))
+
+func _on_music_volume_changed(value: float) -> void:
+	if music_bus_index >= 0:
+		AudioServer.set_bus_volume_db(music_bus_index, linear_to_db(value / 100.0))
+
+func _on_sfx_volume_changed(value: float) -> void:
+	if sfx_bus_index >= 0:
+		AudioServer.set_bus_volume_db(sfx_bus_index, linear_to_db(value / 100.0))

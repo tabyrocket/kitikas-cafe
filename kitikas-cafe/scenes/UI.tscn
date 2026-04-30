@@ -3,10 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://bar3j6f4f7wfe" path="res://assets/images/chatboxleft.png" id="1_h22n5"]
 [ext_resource type="Script" uid="uid://cet3rp2bg344g" path="res://scenes/ui.gd" id="1_ua6yw"]
 [ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="2_ro3t7"]
-[ext_resource type="Texture2D" uid="uid://cs7epgavvu7iv" path="res://assets/images/pausemenu.png" id="3_5en4g"]
-[ext_resource type="Texture2D" uid="uid://dii3c1jcw06g6" path="res://assets/images/pausebuttonmask.png" id="4_3wlde"]
-[ext_resource type="Texture2D" uid="uid://kol4nnje74b" path="res://assets/images/pausebutton.png" id="4_75u2n"]
+[ext_resource type="Texture2D" uid="uid://dii3c1jcw06g6" path="res://assets/images/buttons/pausebuttonmask.png" id="4_3wlde"]
+[ext_resource type="Texture2D" uid="uid://kol4nnje74b" path="res://assets/images/buttons/pausebutton.png" id="4_75u2n"]
+[ext_resource type="Texture2D" uid="uid://dv4koe5jtd1nq" path="res://assets/images/buttons/menubg.png" id="6_w7enk"]
+[ext_resource type="Texture2D" uid="uid://da848tl854q5j" path="res://assets/images/buttons/pausemenubuttons_resume.png" id="7_w7enk"]
 [ext_resource type="AudioStream" uid="uid://cao8iwey36p3y" path="res://assets/sound/animal-crossing-talking-made-with-Voicemod.mp3" id="7_xpksx"]
+[ext_resource type="Texture2D" uid="uid://c02cuoyappqxu" path="res://assets/images/buttons/pausemenubuttons_settings.png" id="8_aputy"]
+[ext_resource type="Texture2D" uid="uid://cfho4sdaviky0" path="res://assets/images/buttons/pausemenubuttons_exit.png" id="9_7paak"]
+[ext_resource type="Texture2D" uid="uid://mv2m70lwqjc8" path="res://assets/images/buttons/backbutton.png" id="10_aputy"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3wlde"]
 texture = ExtResource("4_75u2n")
@@ -16,6 +20,19 @@ texture = ExtResource("4_3wlde")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xpksx"]
 texture = ExtResource("4_3wlde")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5sqrc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ilk7v"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_flkkw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mhjpf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7paak"]
+font = ExtResource("2_ro3t7")
+font_size = 28
+font_color = Color(0.71, 0.40469998, 0.61332166, 1)
 
 [node name="UI" type="CanvasLayer" unique_id=1332173803]
 script = ExtResource("1_ua6yw")
@@ -95,7 +112,6 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_xpksx")
 expand_icon = true
 
 [node name="PauseMenu" type="ColorRect" parent="Root" unique_id=835598879]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -104,7 +120,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.6745098)
 
-[node name="TextureRect" type="TextureRect" parent="Root/PauseMenu" unique_id=1444970949]
+[node name="MenuBG" type="TextureRect" parent="Root/PauseMenu" unique_id=1444970949]
 custom_minimum_size = Vector2(1050, 1000)
 layout_mode = 1
 anchors_preset = 8
@@ -118,12 +134,174 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_5en4g")
+texture = ExtResource("6_w7enk")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="ResumeGameButton" type="Button" parent="Root/PauseMenu/MenuBG" unique_id=967903310]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -195.0
+offset_top = -671.0
+offset_right = 1695.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.21, 0.21)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5sqrc")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ilk7v")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_flkkw")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_mhjpf")
+icon = ExtResource("7_w7enk")
+icon_alignment = 1
+
+[node name="SettingsButton" type="Button" parent="Root/PauseMenu/MenuBG" unique_id=1595654571]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -198.0
+offset_top = -498.0
+offset_right = 1698.0
+offset_bottom = 232.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.21, 0.21)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5sqrc")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ilk7v")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_flkkw")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_mhjpf")
+icon = ExtResource("8_aputy")
+icon_alignment = 1
+
+[node name="ExitButton" type="Button" parent="Root/PauseMenu/MenuBG" unique_id=7651303]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -199.5
+offset_top = -308.0
+offset_right = 1699.5
+offset_bottom = 431.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.21, 0.21)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5sqrc")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ilk7v")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_flkkw")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_mhjpf")
+icon = ExtResource("9_7paak")
+icon_alignment = 1
+
+[node name="SettingsMenu" type="ColorRect" parent="Root" unique_id=1822069473]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.90588236, 0.74509805, 0.74509805, 1)
+
+[node name="MenuBG" type="TextureRect" parent="Root/SettingsMenu" unique_id=2107985633]
+custom_minimum_size = Vector2(1050, 1000)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_w7enk")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Root/SettingsMenu/MenuBG" unique_id=1589842306]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -187.0
+offset_right = 217.0
+offset_bottom = 399.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 82
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Root/SettingsMenu/MenuBG/VBoxContainer" unique_id=1561803513]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MastVolLabel" type="Label" parent="Root/SettingsMenu/MenuBG/VBoxContainer/VBoxContainer" unique_id=193776858]
+layout_mode = 2
+text = "Master Volume"
+label_settings = SubResource("LabelSettings_7paak")
+horizontal_alignment = 1
+
+[node name="MastVolSlider" type="HSlider" parent="Root/SettingsMenu/MenuBG/VBoxContainer/VBoxContainer" unique_id=116001916]
+layout_mode = 2
+value = 100.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Root/SettingsMenu/MenuBG/VBoxContainer" unique_id=804350913]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MusicVolLabel" type="Label" parent="Root/SettingsMenu/MenuBG/VBoxContainer/VBoxContainer2" unique_id=1230068130]
+layout_mode = 2
+text = "Music Volume"
+label_settings = SubResource("LabelSettings_7paak")
+horizontal_alignment = 1
+
+[node name="MusicVolSlider" type="HSlider" parent="Root/SettingsMenu/MenuBG/VBoxContainer/VBoxContainer2" unique_id=1661375817]
+layout_mode = 2
+value = 100.0
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Root/SettingsMenu/MenuBG/VBoxContainer" unique_id=1283128544]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SFXVolLabel" type="Label" parent="Root/SettingsMenu/MenuBG/VBoxContainer/VBoxContainer3" unique_id=1861482537]
+layout_mode = 2
+text = "SFX Volume"
+label_settings = SubResource("LabelSettings_7paak")
+horizontal_alignment = 1
+
+[node name="SFXVolSlider" type="HSlider" parent="Root/SettingsMenu/MenuBG/VBoxContainer/VBoxContainer3" unique_id=205849618]
+layout_mode = 2
+value = 100.0
+
+[node name="BackButton" type="Button" parent="Root/SettingsMenu/MenuBG/VBoxContainer" unique_id=1664086304]
+custom_minimum_size = Vector2(0, 151.55)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5sqrc")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ilk7v")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_flkkw")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_mhjpf")
+icon = ExtResource("10_aputy")
+icon_alignment = 1
+expand_icon = true
 
 [node name="Babble" type="AudioStreamPlayer" parent="." unique_id=1053337612]
 stream = ExtResource("7_xpksx")
 bus = &"SFX"
 
 [connection signal="pressed" from="Root/PauseButton" to="." method="_on_pause_button_pressed"]
+[connection signal="pressed" from="Root/PauseMenu/MenuBG/ResumeGameButton" to="." method="_on_resume_game_button_pressed"]
+[connection signal="pressed" from="Root/PauseMenu/MenuBG/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="Root/PauseMenu/MenuBG/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="Root/SettingsMenu/MenuBG/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

@@ -237,10 +237,6 @@ func _ending_b(mc: String) -> void:
 	_hide_all_bgs()
 	ending_b.visible = true
 
-	# Show Kitika with smirk
-	character_right.visible = true
-	character_right.change_sprite("kitika_smirk")
-
 	# Fade back in
 	var reveal = create_tween()
 	reveal.tween_property(dark_overlay, "modulate:a", 0.0, 1.5)
@@ -251,7 +247,7 @@ func _ending_b(mc: String) -> void:
 	waiting_for_anim = false
 	steps.resize(step)
 	steps.append(
-		{"side": "right", "speaker": "Kitika", "sprite": "kitika_smirk",
+		{"side": "right", "speaker": "Kitika",
 		 "text": "The secret ingredient was innocent little kittens like you, my dear " + mc + ". :3 Why are you so surprised? You agreed to this after all."}
 	)
 	steps.append({"anim": "the_end"})
@@ -282,32 +278,37 @@ func show_step() -> void:
 		_set_bg(s["bg"])
 
 	# --- Characters ---
-	if s.has("show_left"):
-		character_left.visible = s["show_left"]
-	if s.has("show_right"):
-		character_right.visible = s["show_right"]
-
-	# Left character sprite
-	if s["side"] == "left":
-		character_left.visible = true
-		character_left.change_sprite(s["sprite"])
-
-	# Right character sprite
-	if s["side"] == "right":
-		character_right.visible = true
-		if s.has("swap_right"):
-			character_right.change_sprite(s["swap_right"])
-		else:
-			character_right.change_sprite(s["sprite"])
-
-	# Extra character (Billy/Gato appearing next to Kitika)
-	if s.has("extra"):
-		character_extra.visible = true
-		character_extra.change_sprite(s["extra"])
-	if s.get("hide_extra", false):
+	if ending_b.visible:
+		character_left.visible = false
+		character_right.visible = false
 		character_extra.visible = false
-	if s.get("bob_extra", false):
-		_bob_character(character_extra)
+	else:
+		if s.has("show_left"):
+			character_left.visible = s["show_left"]
+		if s.has("show_right"):
+			character_right.visible = s["show_right"]
+	
+		# Left character sprite
+		if s["side"] == "left":
+			character_left.visible = true
+			character_left.change_sprite(s["sprite"])
+	
+		# Right character sprite
+		if s["side"] == "right":
+			character_right.visible = true
+			if s.has("swap_right"):
+				character_right.change_sprite(s["swap_right"])
+			else:
+				character_right.change_sprite(s["sprite"])
+	
+		# Extra character (Billy/Gato appearing next to Kitika)
+		if s.has("extra"):
+			character_extra.visible = true
+			character_extra.change_sprite(s["extra"])
+		if s.get("hide_extra", false):
+			character_extra.visible = false
+		if s.get("bob_extra", false):
+			_bob_character(character_extra)
 
 	if s.get("show_syrup", false):
 		syrup.visible = true
@@ -318,11 +319,21 @@ func show_step() -> void:
 		chatbox_right.visible = false
 		speaker_left.text = s["speaker"]
 		ui.typewriter(dialogue_left, s["text"])
+		
+		# Darken inactive side
+		character_left.modulate = Color(1, 1, 1)
+		character_right.modulate = Color(0.5, 0.5, 0.5)
+		character_extra.modulate = Color(0.5, 0.5, 0.5)
 	else:
 		chatbox_right.visible = true
 		chatbox_left.visible = false
 		speaker_right.text = s["speaker"]
 		ui.typewriter(dialogue_right, s["text"])
+		
+		# Darken inactive side
+		character_left.modulate = Color(0.5, 0.5, 0.5)
+		character_right.modulate = Color(1, 1, 1)
+		character_extra.modulate = Color(1, 1, 1)
 
 	# --- Suspense: slow down typewriter for dramatic lines ---
 	if s.get("suspense", false):

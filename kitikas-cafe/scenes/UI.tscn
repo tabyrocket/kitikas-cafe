@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cet3rp2bg344g" path="res://scenes/ui.gd" id="1_ua6yw"]
 [ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="2_ro3t7"]
 [ext_resource type="Texture2D" uid="uid://dii3c1jcw06g6" path="res://assets/images/buttons/pausebuttonmask.png" id="4_3wlde"]
+[ext_resource type="Texture2D" uid="uid://48ch0jct640n" path="res://assets/images/chatboxright.png" id="4_7paak"]
 [ext_resource type="Texture2D" uid="uid://kol4nnje74b" path="res://assets/images/buttons/pausebutton.png" id="4_75u2n"]
 [ext_resource type="Texture2D" uid="uid://dv4koe5jtd1nq" path="res://assets/images/buttons/menubg.png" id="6_w7enk"]
 [ext_resource type="Texture2D" uid="uid://da848tl854q5j" path="res://assets/images/buttons/pausemenubuttons_resume.png" id="7_w7enk"]
@@ -111,6 +112,72 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 433.3335
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_aputy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_7paak")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_s2m3y")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_4dthu")
+
+[node name="ChatboxRight" type="TextureRect" parent="Root" unique_id=1377130430]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -399.0
+offset_top = -281.0
+offset_right = 4927.0
+offset_bottom = 1537.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("4_7paak")
+
+[node name="Dialogue2" type="RichTextLabel" parent="Root/ChatboxRight" unique_id=1934650126]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 626.6666
+offset_top = 586.66675
+offset_right = -1019.3335
+offset_bottom = -164.6665
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("2_ro3t7")
+theme_override_font_sizes/normal_font_size = 200
+text = "Meow meow meow"
+
+[node name="Speaker2" type="RichTextLabel" parent="Root/ChatboxRight" unique_id=20231141]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3963.3333
+offset_top = 153.33344
+offset_right = -149.3335
+offset_bottom = -1457.9995
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("2_ro3t7")
+theme_override_font_sizes/normal_font_size = 200
+text = "MC"
+horizontal_alignment = 1
+
+[node name="DialogueButton2" type="Button" parent="Root/ChatboxRight" unique_id=2142581140]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 43.33333
+offset_top = 433.3335
+offset_right = 43.333496
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_aputy")

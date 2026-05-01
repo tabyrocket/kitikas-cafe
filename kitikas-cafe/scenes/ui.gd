@@ -2,6 +2,7 @@ extends CanvasLayer
 
 @onready var pause_menu: ColorRect = $Root/PauseMenu
 @onready var chatbox_left: TextureRect = $Root/ChatboxLeft
+@onready var chatbox_right: TextureRect = $Root/ChatboxRight
 @onready var babble: AudioStreamPlayer = $Babble
 @onready var settings_menu: ColorRect = $Root/SettingsMenu
 
@@ -24,6 +25,7 @@ const TYPEWRITER_SPEED: float = 0.02  # seconds per character
 
 func _ready() -> void:
 	chatbox_left.visible = false
+	chatbox_right.visible = false
 	pause_menu.visible = false
 	settings_menu.visible = false
 
@@ -81,6 +83,7 @@ func typewriter_skip() -> void:
 	if _tw_target == null or _tw_full_text == "":
 		return
 	_tw_timer.stop()
+	babble.stop()
 	_tw_target.text = _tw_full_text
 	_tw_target = null
 	_tw_full_text = ""

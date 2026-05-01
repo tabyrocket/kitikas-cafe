@@ -94,7 +94,7 @@ mouse_filter = 0
 [node name="ChatboxLeft" parent="UI/Root" index="0" unique_id=1864751054]
 mouse_filter = 2
 
-[node name="PauseMenu" parent="UI/Root" index="2" unique_id=835598879]
+[node name="PauseMenu" parent="UI/Root" index="3" unique_id=835598879]
 mouse_filter = 1
 
 [node name="MenuBG" parent="UI/Root/PauseMenu" index="0" unique_id=1444970949]

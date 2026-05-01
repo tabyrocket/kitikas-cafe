@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://c4xqrijixwupo"]
+
+[ext_resource type="Script" uid="uid://dgxu45yn4s55p" path="res://scenes/character.gd" id="1_agfs1"]
+[ext_resource type="Texture2D" uid="uid://mnkvhoeafv7e" path="res://assets/characters/mc_default.png" id="2_rkhd4"]
+
+[node name="Character" type="TextureRect" unique_id=981712880]
+offset_right = 1739.0
+offset_bottom = 2444.0
+texture = ExtResource("2_rkhd4")
+stretch_mode = 4
+script = ExtResource("1_agfs1")

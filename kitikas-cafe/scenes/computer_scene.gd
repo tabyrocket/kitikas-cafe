@@ -69,4 +69,4 @@ func _on_dialogue_cooldown_timeout() -> void:
 
 
 func _on_two_days_timer_timeout() -> void:
-	get_tree().change_scene_to_file("res://scenes/application_form.tscn")
+	get_tree().change_scene_to_file("res://scenes/first_day.tscn")

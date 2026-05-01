@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cohvqguq5pj7m" path="res://scenes/application_form.gd" id="1_acsx3"]
 [ext_resource type="Texture2D" uid="uid://dx0jg08ynpsf1" path="res://assets/images/applying form.jpg" id="1_k3dbd"]
+[ext_resource type="Texture2D" uid="uid://c0nj788fe3nuo" path="res://assets/backgrounds/kitikas_cafe_outside_zoomed.png" id="2_2xomt"]
 [ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="2_smwiq"]
 [ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="4_cktnt"]
 [ext_resource type="Texture2D" uid="uid://kttxpxn3fa7x" path="res://assets/backgrounds/twodayslater.png" id="4_makio"]
@@ -14,6 +15,27 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_acsx3")
+
+[node name="CafeBG" type="TextureRect" parent="." unique_id=1219524919]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_2xomt")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=806445513]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.57254905)
 
 [node name="Form" type="TextureRect" parent="." unique_id=662613252]
 layout_mode = 1
@@ -60,6 +82,7 @@ theme_override_fonts/font = ExtResource("2_smwiq")
 text = "Sign"
 
 [node name="TwoDaysLater" type="TextureRect" parent="." unique_id=1521026455]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

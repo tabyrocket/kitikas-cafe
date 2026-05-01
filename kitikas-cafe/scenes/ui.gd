@@ -21,7 +21,7 @@ var _tw_index: int = 0
 var _tw_timer: Timer = null
 var _tw_on_done: Callable = Callable()
 
-const TYPEWRITER_SPEED: float = 0.02  # seconds per character
+var TYPEWRITER_SPEED: float = 0.02  # seconds per character
 
 func _ready() -> void:
 	chatbox_left.visible = false
@@ -50,7 +50,7 @@ func _ready() -> void:
 	if sfx_bus_index >= 0:
 		sfx_vol_slider.value = db_to_linear(AudioServer.get_bus_volume_db(sfx_bus_index)) * 100.0
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
 		pause_menu.visible = not pause_menu.visible
 

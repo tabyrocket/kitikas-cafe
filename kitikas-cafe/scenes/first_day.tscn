@@ -6,6 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://dwiwqq3d37ta0" path="res://assets/backgrounds/cafe_inside_day.png" id="3_nmhqs"]
 [ext_resource type="PackedScene" uid="uid://c4xqrijixwupo" path="res://scenes/character.tscn" id="4_nmhqs"]
 [ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="6_font"]
+[ext_resource type="Texture2D" uid="uid://dj02ajfspn3fb" path="res://assets/backgrounds/cafe_inside_night.png" id="7_night"]
+[ext_resource type="Texture2D" uid="uid://b6htamr7plaff" path="res://assets/backgrounds/stairs.png" id="8_stairs"]
+[ext_resource type="Texture2D" uid="uid://4ob2bjcbkcbw" path="res://assets/backgrounds/ending1_1.png" id="9_ending"]
+[ext_resource type="Texture2D" uid="uid://dj0888hlli7dr" path="res://assets/images/syrup.png" id="10_syrup"]
 
 [node name="FirstDay" type="Control" unique_id=590105826]
 layout_mode = 3
@@ -43,6 +47,62 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_nmhqs")
 expand_mode = 1
+
+[node name="InsideNight" type="TextureRect" parent="Backgrounds" unique_id=1389753679]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_night")
+expand_mode = 1
+
+[node name="Stairs" type="TextureRect" parent="Backgrounds" unique_id=2011574143]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_stairs")
+expand_mode = 1
+
+[node name="EndingB" type="TextureRect" parent="Backgrounds" unique_id=1712629024]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_ending")
+expand_mode = 1
+
+[node name="DarkOverlay" type="ColorRect" parent="Backgrounds" unique_id=1943590597]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Syrup" type="TextureRect" parent="." unique_id=1316350346]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -281.0
+offset_top = -350.0
+offset_right = 257.0
+offset_bottom = 169.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_syrup")
+expand_mode = 1
+stretch_mode = 4
 
 [node name="CharacterLeft" parent="." unique_id=473968974 instance=ExtResource("4_nmhqs")]
 layout_mode = 1
@@ -88,7 +148,6 @@ offset_bottom = 2096.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.35, 0.35)
-flip_h = true
 
 [node name="UI" parent="." unique_id=1332173803 instance=ExtResource("3_c67ln")]
 

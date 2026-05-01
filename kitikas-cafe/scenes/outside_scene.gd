@@ -8,6 +8,7 @@ extends Control
 @onready var chatbox_left: TextureRect = $UI/Root/ChatboxLeft
 @onready var dialogue: RichTextLabel = $UI/Root/ChatboxLeft/Dialogue
 @onready var speaker: RichTextLabel = $UI/Root/ChatboxLeft/Speaker
+@onready var mc: TextureRect = $MC
 
 var done: bool = false
 
@@ -22,6 +23,7 @@ func _on_dialogue_button_pressed():
 func _ready() -> void:
 	zoomed_in_cafe.visible = false
 	chatbox_left.visible = false
+	mc.visible = false
 	ui.get_node("Root/ChatboxLeft/DialogueButton").pressed.connect(_on_dialogue_button_pressed)
 
 
@@ -35,3 +37,4 @@ func _on_job_chatbox_timer_timeout() -> void:
 	chatbox_left.visible = true
 	done = true
 	ui.typewriter(dialogue, "*shivers* S-should I try get a j*b...? I'll try apply I guess. Empl*yment can't be that bad, right?")
+	mc.visible = true

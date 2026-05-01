@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c0nj788fe3nuo" path="res://assets/backgrounds/kitikas_cafe_outside_zoomed.png" id="2_2yh6w"]
 [ext_resource type="Texture2D" uid="uid://bgf774w81d8bv" path="res://assets/backgrounds/kitikas_cafe_outside.png" id="2_omw1v"]
 [ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="2_u00qm"]
+[ext_resource type="PackedScene" uid="uid://c4xqrijixwupo" path="res://scenes/character.tscn" id="5_e0ux2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2yh6w"]
 
@@ -67,6 +68,14 @@ stretch_mode = 6
 [node name="JobChatboxTimer" type="Timer" parent="." unique_id=545673025]
 wait_time = 0.5
 one_shot = true
+
+[node name="MC" parent="." unique_id=981712880 instance=ExtResource("5_e0ux2")]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 419.0
+offset_right = 1869.0
+offset_bottom = 2863.0
+scale = Vector2(0.3, 0.3)
 
 [connection signal="pressed" from="Cafe/CafeSignButton" to="." method="_on_cafe_sign_button_pressed"]
 [connection signal="timeout" from="JobChatboxTimer" to="." method="_on_job_chatbox_timer_timeout"]

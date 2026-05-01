@@ -210,7 +210,7 @@ func _common_steps(mc: String) -> Array:
 		{"side": "right", "speaker": "Kitika", "sprite": "kitika_default",
 		 "text": "Don't be scared, everything downstairs is perfectly normal and legal."},
 		{"side": "left", "speaker": mc, "sprite": "mc_nervous",
-		 "text": "GULP"},
+		 "text": "*GULP*"},
 
 		# --- Choice 2: follow or leave ---
 		{"choice": true, "id": "basement",

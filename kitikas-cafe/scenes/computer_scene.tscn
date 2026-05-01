@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dgs7suelsvvbd" path="res://assets/backgrounds/laptop_email2.png" id="5_5fudp"]
 [ext_resource type="Texture2D" uid="uid://bt86jetb3xe66" path="res://assets/images/acceptance letter.jpg" id="6_cdr88"]
 [ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="6_r825j"]
+[ext_resource type="Texture2D" uid="uid://kttxpxn3fa7x" path="res://assets/backgrounds/twodayslater.png" id="7_5fudp"]
 
 [node name="ComputerScene" type="Control" unique_id=481845899]
 layout_mode = 3
@@ -45,17 +46,45 @@ offset_bottom = 40.0
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("5_5fudp")
 
-[node name="AcceptanceLetter" type="TextureRect" parent="." unique_id=1225942270]
+[node name="AcceptanceLetter" type="TextureRect" parent="." unique_id=1011474813]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("5_5fudp")
+
+[node name="ColorRect" type="ColorRect" parent="AcceptanceLetter" unique_id=1227018952]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6627451)
+
+[node name="Document" type="TextureRect" parent="AcceptanceLetter" unique_id=1225942270]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -415.79498
-offset_right = 859.2051
-offset_bottom = 1650.0
+offset_left = -543.99994
+offset_right = 1152.3743
+offset_bottom = 2195.3076
 grow_horizontal = 2
 scale = Vector2(0.655, 0.655)
 texture = ExtResource("6_cdr88")
+
+[node name="TwoDaysLater" type="TextureRect" parent="." unique_id=1960372266]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_5fudp")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="UI" parent="." unique_id=1332173803 instance=ExtResource("6_r825j")]
 
@@ -68,13 +97,18 @@ mouse_filter = 2
 [node name="PauseMenu" parent="UI/Root" index="2" unique_id=835598879]
 mouse_filter = 1
 
-[node name="TextureRect" parent="UI/Root/PauseMenu" index="0" unique_id=1444970949]
+[node name="MenuBG" parent="UI/Root/PauseMenu" index="0" unique_id=1444970949]
 mouse_filter = 2
+
+[node name="TwoDaysTimer" type="Timer" parent="." unique_id=541547446]
+wait_time = 3.0
+one_shot = true
 
 [node name="DialogueCooldown" type="Timer" parent="." unique_id=1204236205]
 one_shot = true
 autostart = true
 
+[connection signal="timeout" from="TwoDaysTimer" to="." method="_on_two_days_timer_timeout"]
 [connection signal="timeout" from="DialogueCooldown" to="." method="_on_dialogue_cooldown_timeout"]
 
 [editable path="UI"]

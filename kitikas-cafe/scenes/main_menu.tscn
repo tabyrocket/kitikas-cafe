@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://fjyps0itymn4"]
+
+[ext_resource type="Script" uid="uid://18w5h2o0fvr0" path="res://scenes/main_menu.gd" id="1_oa1go"]
+[ext_resource type="Texture2D" uid="uid://bgf774w81d8bv" path="res://assets/backgrounds/kitikas_cafe_outside.png" id="1_wu84c"]
+[ext_resource type="Texture2D" uid="uid://epnhcy3agr2m" path="res://assets/images/buttons/startmenubuttons_start.png" id="3_rtw2f"]
+[ext_resource type="Texture2D" uid="uid://bixppu6a8e0v" path="res://assets/images/buttons/startmenubuttons_start2.png" id="3_tbmy8"]
+[ext_resource type="Texture2D" uid="uid://cotos6ybsx10g" path="res://assets/images/buttons/startmenubuttons_exit.png" id="4_oa1go"]
+[ext_resource type="Texture2D" uid="uid://mnkvhoeafv7e" path="res://assets/characters/mc_default.png" id="5_oa1go"]
+[ext_resource type="Texture2D" uid="uid://cy5al2o2ldj35" path="res://assets/images/buttons/startmenubuttons_exit2.png" id="6_jk1qb"]
+[ext_resource type="Texture2D" uid="uid://dqabgmoglhblw" path="res://assets/characters/kitika_default.png" id="6_tbmy8"]
+[ext_resource type="Texture2D" uid="uid://bexkc74a4lahj" path="res://assets/images/sign.png" id="7_jk1qb"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tbmy8"]
+texture = ExtResource("3_rtw2f")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5dd4i"]
+texture = ExtResource("3_tbmy8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jk1qb"]
+texture = ExtResource("3_tbmy8")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lgwnu"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lgwnu"]
+texture = ExtResource("4_oa1go")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_flqon"]
+texture = ExtResource("6_jk1qb")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rcqid"]
+texture = ExtResource("6_jk1qb")
+
+[node name="MainMenu" type="Control" unique_id=1740851639]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oa1go")
+
+[node name="OutsideCafe" type="TextureRect" parent="." unique_id=999165150]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+mouse_filter = 2
+texture = ExtResource("1_wu84c")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=357450578]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.5868522, 0.48980373, 0.529022, 0.4)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2023531004]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -69.0
+offset_right = 200.0
+offset_bottom = 463.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="StartButton" type="Button" parent="VBoxContainer" unique_id=1929893764]
+custom_minimum_size = Vector2(400, 213.87)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_tbmy8")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5dd4i")
+theme_override_styles/hover = SubResource("StyleBoxTexture_jk1qb")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_lgwnu")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=965672419]
+custom_minimum_size = Vector2(400, 213.87)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_lgwnu")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_flqon")
+theme_override_styles/hover = SubResource("StyleBoxTexture_rcqid")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_lgwnu")
+icon_alignment = 1
+expand_icon = true
+
+[node name="MC" type="TextureRect" parent="." unique_id=474609085]
+layout_mode = 0
+offset_left = -50.0
+offset_top = 164.0
+offset_right = 945.0
+offset_bottom = 1159.0
+mouse_filter = 2
+texture = ExtResource("5_oa1go")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Kitika" type="TextureRect" parent="." unique_id=2122592258]
+layout_mode = 0
+offset_left = 997.0
+offset_top = 164.0
+offset_right = 1992.0
+offset_bottom = 1159.0
+mouse_filter = 2
+texture = ExtResource("6_tbmy8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Logo" type="TextureRect" parent="." unique_id=504816062]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -532.0
+offset_top = -793.0
+offset_right = 463.0
+offset_bottom = 202.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_jk1qb")
+expand_mode = 1
+stretch_mode = 5
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

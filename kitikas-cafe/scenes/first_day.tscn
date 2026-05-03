@@ -7,13 +7,52 @@
 [ext_resource type="PackedScene" uid="uid://c4xqrijixwupo" path="res://scenes/character.tscn" id="4_nmhqs"]
 [ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="6_font"]
 [ext_resource type="Texture2D" uid="uid://dj02ajfspn3fb" path="res://assets/backgrounds/cafe_inside_night.png" id="7_night"]
+[ext_resource type="Texture2D" uid="uid://dpopfcxi2a2yb" path="res://assets/images/clock/frame_00_delay-0.12s.png" id="8_2it71"]
 [ext_resource type="Texture2D" uid="uid://b6htamr7plaff" path="res://assets/backgrounds/stairs.png" id="8_stairs"]
 [ext_resource type="Texture2D" uid="uid://4ob2bjcbkcbw" path="res://assets/backgrounds/ending1_1.png" id="9_ending"]
+[ext_resource type="Texture2D" uid="uid://cdwk01r8wkdcq" path="res://assets/images/clock/frame_01_delay-0.12s.png" id="9_uo8i6"]
 [ext_resource type="Texture2D" uid="uid://dj0888hlli7dr" path="res://assets/images/syrup.png" id="10_syrup"]
+[ext_resource type="Texture2D" uid="uid://dknfrjr3h781g" path="res://assets/images/clock/frame_10_delay-0.12s.png" id="10_ylp0i"]
+[ext_resource type="Texture2D" uid="uid://bfufi7kwq1gyo" path="res://assets/images/clock/frame_11_delay-0.12s.png" id="11_87rev"]
 [ext_resource type="Texture2D" uid="uid://mukt1suxyuga" path="res://assets/images/buttons/optionsbox.png" id="11_hiq5w"]
+[ext_resource type="Texture2D" uid="uid://bpo0kcvvubi2h" path="res://assets/images/clock/frame_02_delay-0.12s.png" id="12_ia43d"]
 [ext_resource type="Texture2D" uid="uid://63sdp3maauyj" path="res://assets/images/buttons/optionsboxmask.png" id="12_xsu4p"]
+[ext_resource type="Texture2D" uid="uid://bry225obxn8vj" path="res://assets/images/clock/frame_03_delay-0.12s.png" id="13_m2vrb"]
 [ext_resource type="AudioStream" uid="uid://8n2ck4foqx28" path="res://assets/sound/knifestab.mp3" id="13_xsu4p"]
 [ext_resource type="Texture2D" uid="uid://jxjgf4g6q8oc" path="res://assets/backgrounds/basement.png" id="14_basement"]
+[ext_resource type="Texture2D" uid="uid://p1vft18ufxob" path="res://assets/images/clock/frame_04_delay-0.12s.png" id="14_eu7fe"]
+[ext_resource type="Texture2D" uid="uid://c3lgtu7wrsbrj" path="res://assets/images/clock/frame_05_delay-0.12s.png" id="15_qgx01"]
+[ext_resource type="Texture2D" uid="uid://dj0ajre58fwlf" path="res://assets/images/clock/frame_06_delay-0.12s.png" id="16_qcgtk"]
+[ext_resource type="Texture2D" uid="uid://k1ngfow8k72a" path="res://assets/images/clock/frame_07_delay-0.12s.png" id="17_gj84l"]
+[ext_resource type="Texture2D" uid="uid://uc3pt67o6nxe" path="res://assets/images/clock/frame_08_delay-0.12s.png" id="18_1nyou"]
+[ext_resource type="Texture2D" uid="uid://cq7ad6yh22676" path="res://assets/images/clock/frame_09_delay-0.12s.png" id="19_har84"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_i8qae"]
+frames = 12
+speed_scale = 2.0
+frame_0/texture = ExtResource("8_2it71")
+frame_1/texture = ExtResource("9_uo8i6")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("12_ia43d")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("13_m2vrb")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("14_eu7fe")
+frame_4/duration = 1.0
+frame_5/texture = ExtResource("15_qgx01")
+frame_5/duration = 1.0
+frame_6/texture = ExtResource("16_qcgtk")
+frame_6/duration = 1.0
+frame_7/texture = ExtResource("17_gj84l")
+frame_7/duration = 1.0
+frame_8/texture = ExtResource("18_1nyou")
+frame_8/duration = 1.0
+frame_9/texture = ExtResource("19_har84")
+frame_9/duration = 1.0
+frame_10/texture = ExtResource("10_ylp0i")
+frame_10/duration = 1.0
+frame_11/texture = ExtResource("11_87rev")
+frame_11/duration = 1.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dy8h0"]
 texture = ExtResource("11_hiq5w")
@@ -92,7 +131,6 @@ texture = ExtResource("9_ending")
 expand_mode = 1
 
 [node name="Basement" type="TextureRect" parent="Backgrounds" unique_id=2011574144]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,6 +138,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("14_basement")
+expand_mode = 1
+
+[node name="Clock" type="TextureRect" parent="Backgrounds" unique_id=188464662]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AnimatedTexture_i8qae")
 expand_mode = 1
 
 [node name="DarkOverlay" type="ColorRect" parent="Backgrounds" unique_id=1943590597]

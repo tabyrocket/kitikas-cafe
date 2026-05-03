@@ -12,6 +12,7 @@ extends Control
 @onready var ending_b: TextureRect = $Backgrounds/EndingB
 @onready var syrup: TextureRect = $Syrup
 @onready var dark_overlay: ColorRect = $Backgrounds/DarkOverlay
+@onready var clock: TextureRect = $Backgrounds/Clock
 @onready var character_left: TextureRect = $CharacterLeft
 @onready var character_right: TextureRect = $CharacterRight
 @onready var character_extra: TextureRect = $CharacterExtra
@@ -50,6 +51,7 @@ func _ready() -> void:
 	ending_b.visible = false
 	syrup.visible = false
 	dark_overlay.visible = false
+	clock.visible = false
 	character_left.visible = false
 	character_right.visible = false
 	character_extra.visible = false
@@ -451,6 +453,7 @@ func _hide_all_bgs() -> void:
 	stairs.visible = false
 	basement.visible = false
 	ending_b.visible = false
+	clock.visible = false
 	syrup.visible = false
 
 func _set_bg_texture(path: String) -> void:
@@ -484,11 +487,11 @@ func _anim_time_skip() -> void:
 	character_right.visible = false
 	syrup.visible = false
 
-	# Fade to black
-	dark_overlay.visible = true
-	dark_overlay.modulate.a = 0.0
-	var fade_in = create_tween()
-	fade_in.tween_property(dark_overlay, "modulate:a", 1.0, 1.2)
+	# Show Clock background
+	clock.visible = true
+	clock.modulate.a = 0.0
+	var clock_fade_in = create_tween()
+	clock_fade_in.tween_property(clock, "modulate:a", 1.0, 1.2)
 	
 	var bgm = get_node_or_null("/root/BGM")
 	var orig_vol = -20.982
@@ -497,11 +500,12 @@ func _anim_time_skip() -> void:
 		var vol_fade_out = create_tween()
 		vol_fade_out.tween_property(bgm, "volume_db", -80.0, 1.2)
 		
-	await fade_in.finished
+	await clock_fade_in.finished
 
-	# Switch bg while black
+	# Switch bg behind clock
 	_hide_all_bgs()
 	inside_night.visible = true
+	clock.visible = true # Keep it visible since _hide_all_bgs hides it
 
 	if bgm:
 		bgm.stream = load("res://assets/sound/creepy-industrial-sounds-ambience.mp3")
@@ -509,14 +513,14 @@ func _anim_time_skip() -> void:
 		var vol_fade_in = create_tween()
 		vol_fade_in.tween_property(bgm, "volume_db", orig_vol, 1.2)
 
-	# Hold on black (clock moment)
+	# Hold on clock
 	await get_tree().create_timer(2.0).timeout
 
-	# Fade out
-	var fade_out = create_tween()
-	fade_out.tween_property(dark_overlay, "modulate:a", 0.0, 1.2)
-	await fade_out.finished
-	dark_overlay.visible = false
+	# Fade out clock
+	var clock_fade_out = create_tween()
+	clock_fade_out.tween_property(clock, "modulate:a", 0.0, 1.2)
+	await clock_fade_out.finished
+	clock.visible = false
 
 func _anim_fade_to_stairs() -> void:
 	chatbox_left.visible = false

@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c0nj788fe3nuo" path="res://assets/backgrounds/kitikas_cafe_outside_zoomed.png" id="2_2xomt"]
 [ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="2_smwiq"]
 [ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="4_cktnt"]
-[ext_resource type="Texture2D" uid="uid://kttxpxn3fa7x" path="res://assets/backgrounds/twodayslater.png" id="4_makio"]
+[ext_resource type="Texture2D" uid="uid://cbbmgc5tas2lb" path="res://assets/backgrounds/oneweeklater.png" id="5_2xomt"]
 
 [node name="ApplicationForm" type="Control" unique_id=870412706]
 layout_mode = 3
@@ -90,7 +90,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("4_makio")
+texture = ExtResource("5_2xomt")
 expand_mode = 1
 stretch_mode = 5
 

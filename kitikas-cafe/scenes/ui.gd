@@ -3,6 +3,7 @@ extends CanvasLayer
 @onready var pause_menu: ColorRect = $Root/PauseMenu
 @onready var chatbox_left: TextureRect = $Root/ChatboxLeft
 @onready var chatbox_right: TextureRect = $Root/ChatboxRight
+@onready var main_dialogue_button: Button = $Root/MainDialogueButton
 @onready var babble: AudioStreamPlayer = $Babble
 @onready var settings_menu: ColorRect = $Root/SettingsMenu
 
@@ -26,6 +27,7 @@ var TYPEWRITER_SPEED: float = 0.02  # seconds per character
 func _ready() -> void:
 	chatbox_left.visible = false
 	chatbox_right.visible = false
+	main_dialogue_button.visible = false
 	pause_menu.visible = false
 	settings_menu.visible = false
 

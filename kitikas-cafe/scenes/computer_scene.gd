@@ -43,6 +43,7 @@ func _ready() -> void:
 	images = [mc_house, laptop_screen, laptop_email_1, laptop_email_2, acceptance_letter, acceptance_letter]
 	update_img()
 	ui.get_node("Root/ChatboxLeft/DialogueButton").pressed.connect(_on_dialogue_button_pressed)
+	ui.main_dialogue_button.pressed.connect(_on_dialogue_button_pressed)
 	
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
@@ -52,6 +53,7 @@ func _input(event: InputEvent) -> void:
 
 func update_img() -> void:
 	chatbox_left.visible = false
+	ui.main_dialogue_button.visible = false
 	can_move_on = false
 	dialogue_cooldown.start()
 	
@@ -64,12 +66,14 @@ func transition() -> void:
 	two_days_later.visible = true
 	two_days_timer.start()
 	chatbox_left.visible = false
+	ui.main_dialogue_button.visible = false
 
 func _on_dialogue_cooldown_timeout() -> void:
 	# Dialogue
 	speaker.text = Global.player_name
 	ui.typewriter(dialogue, dialogue_strings[current_image])
 	chatbox_left.visible = true
+	ui.main_dialogue_button.visible = true
 	can_move_on = true
 
 

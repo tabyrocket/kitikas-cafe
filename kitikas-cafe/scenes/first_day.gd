@@ -293,6 +293,7 @@ func _ending_b(mc: String) -> void:
 	chatbox_right.visible = false
 	character_left.visible = false
 	character_right.visible = false
+	ui.main_dialogue_button.visible = false
 
 	# Fade to black
 	dark_overlay.visible = true
@@ -330,6 +331,7 @@ func show_step() -> void:
 		return
 
 	var s = steps[step]
+	ui.main_dialogue_button.visible = false
 
 	# --- Handle choice step ---
 	if s.get("choice", false):
@@ -397,6 +399,8 @@ func show_step() -> void:
 		_play_sfx(s["play_sfx"])
 
 	# --- Dialogue ---
+	if s.has("text"):
+		ui.main_dialogue_button.visible = true
 	if s.get("side") == "left":
 		chatbox_left.visible = true
 		chatbox_right.visible = false

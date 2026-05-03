@@ -17,12 +17,14 @@ func _on_dialogue_button_pressed():
 		ui.typewriter_skip()
 		return
 	if done == true:
+		ui.main_dialogue_button.visible = false
 		get_tree().change_scene_to_file("res://scenes/application_form.tscn")
 
 func _ready() -> void:
 	zoomed_in_cafe.visible = false
 	chatbox_left.visible = false
 	ui.get_node("Root/ChatboxLeft/DialogueButton").pressed.connect(_on_dialogue_button_pressed)
+	ui.main_dialogue_button.pressed.connect(_on_dialogue_button_pressed)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
@@ -38,5 +40,6 @@ func _on_cafe_sign_button_pressed() -> void:
 func _on_job_chatbox_timer_timeout() -> void:
 	speaker.text = "MC"
 	chatbox_left.visible = true
+	ui.main_dialogue_button.visible = true
 	done = true
 	ui.typewriter(dialogue, "*shivers* S-should I try get a j*b...? I'll try apply I guess. Empl*yment can't be that bad, right?")

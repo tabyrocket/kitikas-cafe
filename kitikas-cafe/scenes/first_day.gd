@@ -581,6 +581,8 @@ func _anim_the_end() -> void:
 	# Ensure dark overlay is on top of any dynamically added cutscene layers
 	$Backgrounds.move_child(dark_overlay, -1)
 
+	var melonrip_player = _play_sfx("res://assets/sound/melonrip.mp3")
+
 	# Dramatic fade to black
 	dark_overlay.visible = true
 	dark_overlay.modulate.a = 0.0
@@ -597,7 +599,7 @@ func _anim_the_end() -> void:
 			child.queue_free()
 
 	# Play the freezer cutscene at the very end
-	await _play_freezer_cutscene()
+	await _play_freezer_cutscene(melonrip_player)
 
 	# TODO: Show "THE END" text or transition to credits/menu
 	# get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
@@ -745,13 +747,11 @@ func _play_ending2_cutscene() -> void:
 			
 			await get_tree().create_timer(freezer_frame_duration).timeout
 
-func _play_freezer_cutscene() -> void:
+func _play_freezer_cutscene(melonrip_player: AudioStreamPlayer = null) -> void:
 	var cutscene_parent = Control.new()
 	cutscene_parent.name = "CutsceneParent"
 	cutscene_parent.set_anchors_preset(Control.PRESET_FULL_RECT)
 	$Backgrounds.add_child(cutscene_parent)
-	
-	var melonrip_player = _play_sfx("res://assets/sound/melonrip.mp3")
 	
 	var dir = DirAccess.open("res://assets/freezer-cutscene")
 	var final_files = []
@@ -775,7 +775,11 @@ func _play_freezer_cutscene() -> void:
 		)
 		
 		for file in final_files:
-			if file == "freezer_4.png":
+			if file == "freezer_2.png" and melonrip_player:
+				melonrip_player.stop()
+				melonrip_player.queue_free()
+				melonrip_player = null
+			elif file == "freezer_4.png":
 				_play_sfx("res://assets/sound/freezer-open.mp3")
 			elif file == "freezer_8.png":
 				_play_sfx("res://assets/sound/jumpscare.mp3")

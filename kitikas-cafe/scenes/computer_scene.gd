@@ -44,6 +44,11 @@ func _ready() -> void:
 	update_img()
 	ui.get_node("Root/ChatboxLeft/DialogueButton").pressed.connect(_on_dialogue_button_pressed)
 	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("next"):
+		if chatbox_left.visible:
+			_on_dialogue_button_pressed()
+	
 
 func update_img() -> void:
 	chatbox_left.visible = false

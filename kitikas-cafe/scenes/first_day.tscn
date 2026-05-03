@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://mukt1suxyuga" path="res://assets/images/buttons/optionsbox.png" id="11_hiq5w"]
 [ext_resource type="Texture2D" uid="uid://63sdp3maauyj" path="res://assets/images/buttons/optionsboxmask.png" id="12_xsu4p"]
 [ext_resource type="AudioStream" uid="uid://8n2ck4foqx28" path="res://assets/sound/knifestab.mp3" id="13_xsu4p"]
+[ext_resource type="Texture2D" uid="uid://jxjgf4g6q8oc" path="res://assets/backgrounds/basement.png" id="14_basement"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dy8h0"]
 texture = ExtResource("11_hiq5w")
@@ -88,6 +89,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("9_ending")
+expand_mode = 1
+
+[node name="Basement" type="TextureRect" parent="Backgrounds" unique_id=2011574144]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_basement")
 expand_mode = 1
 
 [node name="DarkOverlay" type="ColorRect" parent="Backgrounds" unique_id=1943590597]

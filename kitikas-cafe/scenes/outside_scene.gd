@@ -24,6 +24,11 @@ func _ready() -> void:
 	chatbox_left.visible = false
 	ui.get_node("Root/ChatboxLeft/DialogueButton").pressed.connect(_on_dialogue_button_pressed)
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("next"):
+		if chatbox_left.visible:
+			_on_dialogue_button_pressed()
+
 
 func _on_cafe_sign_button_pressed() -> void:
 	zoomed_in_cafe.visible = true

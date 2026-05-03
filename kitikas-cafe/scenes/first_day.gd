@@ -8,6 +8,7 @@ extends Control
 @onready var inside: TextureRect = $Backgrounds/Inside
 @onready var inside_night: TextureRect = $Backgrounds/InsideNight
 @onready var stairs: TextureRect = $Backgrounds/Stairs
+@onready var basement: TextureRect = $Backgrounds/Basement
 @onready var ending_b: TextureRect = $Backgrounds/EndingB
 @onready var syrup: TextureRect = $Syrup
 @onready var dark_overlay: ColorRect = $Backgrounds/DarkOverlay
@@ -38,6 +39,7 @@ func _ready() -> void:
 	inside.visible = false
 	inside_night.visible = false
 	stairs.visible = false
+	basement.visible = false
 	ending_b.visible = false
 	syrup.visible = false
 	dark_overlay.visible = false
@@ -55,6 +57,11 @@ func _ready() -> void:
 	var mc = Global.player_name
 	build_steps(mc)
 	show_step()
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("next"):
+		if chatbox_left.visible or chatbox_right.visible:
+			_on_dialogue_button_pressed()
 
 func build_steps(mc: String) -> void:
 	steps = [
@@ -88,11 +95,25 @@ func _on_choice_a() -> void:
 		]
 		_insert_and_continue(branch, mc)
 	elif id == "basement":
+		var branch: Array = [
+			{"anim": "fade_to_basement"},
+			{"bg": "basement", "side": "right", "speaker": "Kitika", "sprite": "kitika_hmm", 
+			 "text": "Just this way " + mc + ", don’t worry this is all normal :)"},
+			{"choice": true, "id": "basement_follow",
+			 "a_text": "Walk towards strange device",
+			 "b_text": "RUN!"}
+		]
+		steps.resize(step)
+		steps.append_array(branch)
+		show_step()
+	elif id == "basement_follow":
 		# Outcome A — unimplemented, placeholder
 		var branch: Array = [
 			{"side": "left", "speaker": mc, "sprite": "mc_default", "text": "..."},
 		]
-		_insert_and_continue(branch, mc)
+		steps.resize(step)
+		steps.append_array(branch)
+		show_step()
 
 func _on_choice_b() -> void:
 	waiting_for_choice = false
@@ -114,6 +135,8 @@ func _on_choice_b() -> void:
 		_insert_and_continue(branch, mc)
 	elif id == "basement":
 		_ending_b(mc)
+	elif id == "basement_follow":
+		_ending_run(mc)
 
 func _insert_and_continue(branch: Array, mc: String) -> void:
 	var common: Array = _common_steps(mc)
@@ -365,6 +388,7 @@ func _set_bg(bg_name: String) -> void:
 		"inside": inside.visible = true
 		"inside_night": inside_night.visible = true
 		"stairs": stairs.visible = true
+		"basement": basement.visible = true
 		"ending_b": ending_b.visible = true
 
 func _hide_all_bgs() -> void:
@@ -372,6 +396,7 @@ func _hide_all_bgs() -> void:
 	inside.visible = false
 	inside_night.visible = false
 	stairs.visible = false
+	basement.visible = false
 	ending_b.visible = false
 
 # --- Animation sequences ---
@@ -382,6 +407,8 @@ func _play_anim(anim_name: String) -> void:
 			await _anim_time_skip()
 		"fade_to_stairs":
 			await _anim_fade_to_stairs()
+		"fade_to_basement":
+			await _anim_fade_to_basement()
 		"the_end":
 			await _anim_the_end()
 	waiting_for_anim = false
@@ -441,10 +468,38 @@ func _anim_fade_to_stairs() -> void:
 	await fade_out.finished
 	dark_overlay.visible = false
 
+func _anim_fade_to_basement() -> void:
+	chatbox_left.visible = false
+	chatbox_right.visible = false
+	character_left.visible = false
+	character_right.visible = false
+
+	# Fade to black
+	dark_overlay.visible = true
+	dark_overlay.modulate.a = 0.0
+	var fade_in = create_tween()
+	fade_in.tween_property(dark_overlay, "modulate:a", 1.0, 0.8)
+	await fade_in.finished
+
+	# Switch bg while black
+	_hide_all_bgs()
+	basement.visible = true
+
+	await get_tree().create_timer(0.5).timeout
+
+	# Fade back in
+	var fade_out = create_tween()
+	fade_out.tween_property(dark_overlay, "modulate:a", 0.0, 0.8)
+	await fade_out.finished
+	dark_overlay.visible = false
+
 func _anim_the_end() -> void:
 	chatbox_left.visible = false
 	chatbox_right.visible = false
 	character_right.visible = false
+
+	# Ensure dark overlay is on top of any dynamically added cutscene layers
+	$Backgrounds.move_child(dark_overlay, -1)
 
 	# Dramatic fade to black
 	dark_overlay.visible = true
@@ -456,14 +511,69 @@ func _anim_the_end() -> void:
 	# Hold for dramatic pause
 	await get_tree().create_timer(3.0).timeout
 
+	# Clear any previous cutscene layers before starting the final one
+	for child in $Backgrounds.get_children():
+		if child.name == "CutsceneParent":
+			child.queue_free()
+
 	# Play the freezer cutscene at the very end
 	await _play_freezer_cutscene()
 
 	# TODO: Show "THE END" text or transition to credits/menu
 	# get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
+func _ending_run(mc: String) -> void:
+	waiting_for_anim = true
+	chatbox_left.visible = false
+	chatbox_right.visible = false
+	character_left.visible = false
+	character_right.visible = false
+	
+	# Play ending2 cutscene
+	await _play_ending2_cutscene()
+	
+	# Final dialogue before the very end
+	waiting_for_anim = false
+	steps.resize(step)
+	steps.append(
+		{"side": "right", "speaker": "Kitika", "sprite": "kitika_smirk",
+		 "text": "The secret ingredient was innocent little kittens like you, my dear " + mc + ". :3 Why are you so surprised? You agreed to this after all."}
+	)
+	steps.append({"anim": "the_end"})
+	show_step()
+
+func _play_ending2_cutscene() -> void:
+	var cutscene_parent = Control.new()
+	cutscene_parent.name = "CutsceneParent"
+	cutscene_parent.set_anchors_preset(Control.PRESET_FULL_RECT)
+	$Backgrounds.add_child(cutscene_parent)
+	
+	var images = [
+		"res://assets/backgrounds/ending2_1.png",
+		"res://assets/backgrounds/ending2_2.png",
+		"res://assets/backgrounds/ending2_3.png",
+		"res://assets/backgrounds/ending2_4.png"
+	]
+	
+	for path in images:
+		var tex = load(path)
+		if tex:
+			var tr = TextureRect.new()
+			tr.texture = tex
+			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			tr.set_anchors_preset(Control.PRESET_FULL_RECT)
+			tr.modulate.a = 0.0
+			cutscene_parent.add_child(tr)
+			
+			var tween = create_tween()
+			tween.tween_property(tr, "modulate:a", 1.0, freezer_transition_length)
+			await tween.finished
+			
+			await get_tree().create_timer(freezer_frame_duration).timeout
+
 func _play_freezer_cutscene() -> void:
 	var cutscene_parent = Control.new()
+	cutscene_parent.name = "CutsceneParent"
 	cutscene_parent.set_anchors_preset(Control.PRESET_FULL_RECT)
 	$Backgrounds.add_child(cutscene_parent)
 	

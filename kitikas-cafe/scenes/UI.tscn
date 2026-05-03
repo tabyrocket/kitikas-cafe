@@ -56,6 +56,20 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="MainDialogueButton" type="Button" parent="Root" unique_id=2142581141]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_aputy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_aputy")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_aputy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aputy")
+flat = true
+
 [node name="ChatboxLeft" type="TextureRect" parent="Root" unique_id=1864751054]
 layout_mode = 1
 anchors_preset = 7
@@ -71,6 +85,7 @@ grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("1_h22n5")
+mouse_filter = 2
 
 [node name="Dialogue" type="RichTextLabel" parent="Root/ChatboxLeft" unique_id=305033306]
 layout_mode = 1
@@ -140,6 +155,7 @@ grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("4_7paak")
+mouse_filter = 2
 
 [node name="Dialogue2" type="RichTextLabel" parent="Root/ChatboxRight" unique_id=1934650126]
 layout_mode = 1

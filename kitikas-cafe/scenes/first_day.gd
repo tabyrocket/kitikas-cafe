@@ -61,6 +61,7 @@ func _ready() -> void:
 
 	ui.get_node("Root/ChatboxLeft/DialogueButton").pressed.connect(_on_dialogue_button_pressed)
 	ui.get_node("Root/ChatboxRight/DialogueButton2").pressed.connect(_on_dialogue_button_pressed)
+	ui.get_node("Root/MainDialogueButton").pressed.connect(_on_dialogue_button_pressed)
 	choice_a_btn.pressed.connect(_on_choice_a)
 	choice_b_btn.pressed.connect(_on_choice_b)
 
@@ -100,7 +101,7 @@ func _ready() -> void:
 	
 	show_step()
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("next"):
 		if chatbox_left.visible or chatbox_right.visible:
 			_on_dialogue_button_pressed()
@@ -312,6 +313,8 @@ func _ending_b(mc: String) -> void:
 	await reveal.finished
 	dark_overlay.visible = false
 
+	await get_tree().create_timer(3.0).timeout
+
 	# Final dialogue
 	waiting_for_anim = false
 	steps.resize(step)
@@ -390,6 +393,9 @@ func show_step() -> void:
 	if s.get("show_syrup", false):
 		syrup.visible = true
 
+	if s.has("play_sfx"):
+		_play_sfx(s["play_sfx"])
+
 	# --- Dialogue ---
 	if s.get("side") == "left":
 		chatbox_left.visible = true
@@ -427,6 +433,8 @@ func show_step() -> void:
 		last_words_container.visible = false
 
 func _on_dialogue_button_pressed() -> void:
+	if not (chatbox_left.visible or chatbox_right.visible):
+		return
 	if waiting_for_choice or waiting_for_anim or waiting_for_input:
 		return
 	if ui.is_typing():
@@ -475,6 +483,8 @@ func _play_anim(anim_name: String) -> void:
 			await _anim_fade_to_basement()
 		"ending3_start":
 			await _anim_ending3_start()
+		"ending3_death":
+			await _anim_ending3_death()
 		"the_end":
 			await _anim_the_end()
 	waiting_for_anim = false
@@ -494,6 +504,8 @@ func _anim_time_skip() -> void:
 	clock.modulate.a = 0.0
 	var clock_fade_in = create_tween()
 	clock_fade_in.tween_property(clock, "modulate:a", 1.0, 1.2)
+	
+	var clock_sound = _play_sfx("res://assets/sound/clock-ticking.mp3")
 	
 	var bgm = get_node_or_null("/root/BGM")
 	var orig_vol = -20.982
@@ -523,6 +535,10 @@ func _anim_time_skip() -> void:
 	clock_fade_out.tween_property(clock, "modulate:a", 0.0, 1.2)
 	await clock_fade_out.finished
 	clock.visible = false
+	
+	if is_instance_valid(clock_sound):
+		clock_sound.stop()
+		clock_sound.queue_free()
 
 func _anim_fade_to_stairs() -> void:
 	chatbox_left.visible = false
@@ -559,7 +575,7 @@ func _anim_fade_to_basement() -> void:
 	dark_overlay.visible = true
 	dark_overlay.modulate.a = 0.0
 	var fade_in = create_tween()
-	fade_in.tween_property(dark_overlay, "modulate:a", 1.0, 0.8)
+	fade_in.tween_property(dark_overlay, "modulate:a", 1.0, 2.5)
 	await fade_in.finished
 
 	# Switch bg while black
@@ -575,26 +591,25 @@ func _anim_fade_to_basement() -> void:
 
 	# Fade back in
 	var fade_out = create_tween()
-	fade_out.tween_property(dark_overlay, "modulate:a", 0.0, 0.8)
+	fade_out.tween_property(dark_overlay, "modulate:a", 0.0, 2.0)
 	await fade_out.finished
 	dark_overlay.visible = false
 
 func _anim_the_end() -> void:
 	chatbox_left.visible = false
 	chatbox_right.visible = false
+	character_left.visible = false
 	character_right.visible = false
+	character_extra.visible = false
 
 	# Ensure dark overlay is on top of any dynamically added cutscene layers
 	$Backgrounds.move_child(dark_overlay, -1)
 
 	var melonrip_player = _play_sfx("res://assets/sound/melonrip.mp3")
 
-	# Dramatic fade to black
+	# Instant black
 	dark_overlay.visible = true
-	dark_overlay.modulate.a = 0.0
-	var fade = create_tween()
-	fade.tween_property(dark_overlay, "modulate:a", 1.0, 2.0)
-	await fade.finished
+	dark_overlay.modulate.a = 1.0
 
 	# Hold for dramatic pause
 	await get_tree().create_timer(3.0).timeout
@@ -621,6 +636,11 @@ func _anim_ending3_start() -> void:
 	var fade_out_screen = create_tween()
 	fade_out_screen.tween_property(dark_overlay, "modulate:a", 1.0, 0.5)
 	await fade_out_screen.finished
+	
+	_play_sfx("res://assets/sound/push.mp3")
+	await get_tree().create_timer(2.0).timeout
+	_play_sfx("res://assets/sound/clang.mp3")
+	await get_tree().create_timer(2.0).timeout
 	
 	# Show ending3_1
 	_set_bg_texture("res://assets/backgrounds/ending3_1.png")
@@ -649,6 +669,34 @@ func _anim_ending3_start() -> void:
 	ending_b.texture = fade_tr.texture
 	fade_tr.queue_free()
 
+func _anim_ending3_death() -> void:
+	chatbox_left.visible = false
+	chatbox_right.visible = false
+	character_left.visible = false
+	character_right.visible = false
+	
+	# Fade to black
+	dark_overlay.visible = true
+	dark_overlay.modulate.a = 0.0
+	var fade = create_tween()
+	fade.tween_property(dark_overlay, "modulate:a", 1.0, 1.0)
+	await fade.finished
+	
+	_play_sfx("res://assets/sound/flesh.mp3")
+	_play_sfx("res://assets/sound/scream.mp3")
+	
+	await get_tree().create_timer(1.0).timeout
+	_play_sfx("res://assets/sound/body_fall.mp3")
+	
+	await get_tree().create_timer(2.0).timeout
+	
+	# Fade in ending3_6
+	_set_bg_texture("res://assets/backgrounds/ending3_6.png")
+	var fade_in = create_tween()
+	fade_in.tween_property(dark_overlay, "modulate:a", 0.0, 1.0)
+	await fade_in.finished
+	dark_overlay.visible = false
+
 func _ending_device(mc: String) -> void:
 	achieved_ending = 3
 	waiting_for_anim = true
@@ -661,6 +709,7 @@ func _ending_device(mc: String) -> void:
 	steps.append({"anim": "ending3_start"})
 	steps.append({
 		"bg_texture": "res://assets/backgrounds/ending3_2.png",
+		"no_sprites": true,
 		"side": "right", "speaker": "Kitika", "sprite": "kitika_hmm",
 		"text": "Well, well, well, I’m really sorry it had to end this way. NOT. Silly " + mc + ", you agreed to this…"
 	})
@@ -673,6 +722,7 @@ func _ending_device(mc: String) -> void:
 	steps.append({
 		"bg_texture": "res://assets/backgrounds/ending3_4.png",
 		"last_words": true,
+		"no_sprites": true,
 		"side": "right", "speaker": "Kitika",
 		"text": "Any last words?"
 	})
@@ -681,6 +731,14 @@ func _ending_device(mc: String) -> void:
 		"no_sprites": true,
 		"side": "right", "speaker": "Kitika",
 		"text": "Okay, I don’t really care, you feline. I think I’ll start with your tail, it’s the ingredient for our most popular drink; strawkitty matcha latte."
+	})
+	steps.append({"anim": "ending3_death"})
+	steps.append({
+		"bg_texture": "res://assets/backgrounds/ending3_6.png",
+		"no_sprites": true,
+		"side": "right", "speaker": "Kitika",
+		"text": "MWAHAHAHAHAHHAHAHAAHAH",
+		"play_sfx": "res://assets/sound/pos_laugh.mp3"
 	})
 	steps.append({"anim": "the_end"})
 	
@@ -703,11 +761,13 @@ func _ending_run(mc: String) -> void:
 	# Play ending2 cutscene
 	await _play_ending2_cutscene()
 	
+	await get_tree().create_timer(2.0).timeout
+	
 	# Final dialogue before the very end
 	waiting_for_anim = false
 	steps.resize(step)
 	steps.append(
-		{"side": "right", "speaker": "Kitika", "sprite": "kitika_smirk",
+		{"side": "right", "speaker": "Kitika", "sprite": "kitika_smirk", "no_sprites": true,
 		 "text": "The secret ingredient was innocent little kittens like you, my dear " + mc + ". :3 Why are you so surprised? You agreed to this after all."}
 	)
 	steps.append({"anim": "the_end"})
@@ -731,6 +791,8 @@ func _play_ending2_cutscene() -> void:
 	for path in images:
 		if path == "res://assets/backgrounds/ending2_1.png":
 			running_player = _play_sfx("res://assets/sound/running.mp3")
+		elif path == "res://assets/backgrounds/ending2_2.png":
+			_play_sfx("res://assets/sound/knifethrow.mp3")
 		elif path == "res://assets/backgrounds/ending2_3.png":
 			if running_player:
 				running_player.stop()
@@ -752,13 +814,14 @@ func _play_ending2_cutscene() -> void:
 			tween.tween_property(tr, "modulate:a", 1.0, freezer_transition_length)
 			await tween.finished
 			
-			await get_tree().create_timer(freezer_frame_duration).timeout
+			await get_tree().create_timer(1.5).timeout
 
 func _play_freezer_cutscene(melonrip_player: AudioStreamPlayer = null) -> void:
 	var cutscene_parent = Control.new()
 	cutscene_parent.name = "CutsceneParent"
 	cutscene_parent.set_anchors_preset(Control.PRESET_FULL_RECT)
 	$Backgrounds.add_child(cutscene_parent)
+	$Backgrounds.move_child(cutscene_parent, -1)
 	
 	var dir = DirAccess.open("res://assets/freezer-cutscene")
 	var final_files = []
@@ -808,7 +871,10 @@ func _play_freezer_cutscene(melonrip_player: AudioStreamPlayer = null) -> void:
 				tween.tween_property(tr, "modulate:a", 1.0, freezer_transition_length)
 				await tween.finished
 				
-				await get_tree().create_timer(freezer_frame_duration).timeout
+				if file == "freezer_8.png":
+					await get_tree().create_timer(3.0).timeout
+				else:
+					await get_tree().create_timer(freezer_frame_duration).timeout
 
 	if melonrip_player:
 		melonrip_player.stop()
@@ -862,32 +928,32 @@ func _show_ending_screen() -> void:
 	
 	var font = choice_a_btn.get_theme_font("font")
 	
+	var vbox = VBoxContainer.new()
+	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.add_theme_constant_override("separation", 20)
+	content.add_child(vbox)
+	
 	var title = Label.new()
 	title.text = "ENDING " + str(ending_num) + "/3"
-	title.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_override("font", font)
 	title.add_theme_font_size_override("font_size", 64)
-	title.position.y = 100
-	content.add_child(title)
+	vbox.add_child(title)
 	
 	var drink_img = TextureRect.new()
 	drink_img.texture = load(drink_texture_path)
 	drink_img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	drink_img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	drink_img.set_anchors_preset(Control.PRESET_CENTER)
-	drink_img.custom_minimum_size = Vector2(400, 400)
-	drink_img.position = -drink_img.custom_minimum_size / 2
-	content.add_child(drink_img)
+	drink_img.custom_minimum_size = Vector2(600, 600)
+	vbox.add_child(drink_img)
 	
 	var drink_label = Label.new()
 	drink_label.text = drink_name
-	drink_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	drink_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	drink_label.add_theme_font_override("font", font)
 	drink_label.add_theme_font_size_override("font_size", 48)
-	drink_label.position.y = -150
-	content.add_child(drink_label)
+	vbox.add_child(drink_label)
 	
 	ending_ui.modulate.a = 0.0
 	var tween = create_tween()
@@ -902,6 +968,8 @@ func _show_ending_screen() -> void:
 	var tween2 = create_tween()
 	tween2.tween_property(content, "modulate:a", 0.0, 2.0)
 	await tween2.finished
+	
+	await get_tree().create_timer(2.0).timeout
 	
 	_play_credits(ending_ui)
 

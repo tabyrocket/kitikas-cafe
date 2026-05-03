@@ -31,6 +31,7 @@ extends Control
 @onready var choice_b_btn: Button = $UI/Root/ChoiceB
 
 var step: int = 0
+var achieved_ending: int = 0
 var steps: Array = []
 var waiting_for_choice: bool = false
 var waiting_for_anim: bool = false
@@ -285,6 +286,7 @@ func _common_steps(mc: String) -> Array:
 
 # --- Ending B sequence (played via tweens, not steps) ---
 func _ending_b(mc: String) -> void:
+	achieved_ending = 1
 	waiting_for_anim = true
 	chatbox_left.visible = false
 	chatbox_right.visible = false
@@ -605,8 +607,7 @@ func _anim_the_end() -> void:
 	# Play the freezer cutscene at the very end
 	await _play_freezer_cutscene(melonrip_player)
 
-	# TODO: Show "THE END" text or transition to credits/menu
-	# get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	await _show_ending_screen()
 
 func _anim_ending3_start() -> void:
 	chatbox_left.visible = false
@@ -649,6 +650,7 @@ func _anim_ending3_start() -> void:
 	fade_tr.queue_free()
 
 func _ending_device(mc: String) -> void:
+	achieved_ending = 3
 	waiting_for_anim = true
 	chatbox_left.visible = false
 	chatbox_right.visible = false
@@ -691,6 +693,7 @@ func _on_last_words_submitted() -> void:
 	show_step()
 
 func _ending_run(mc: String) -> void:
+	achieved_ending = 2
 	waiting_for_anim = true
 	chatbox_left.visible = false
 	chatbox_right.visible = false
@@ -825,3 +828,92 @@ func _bob_character(node: TextureRect) -> void:
 	var origin_y = node.position.y
 	tween.tween_property(node, "position:y", origin_y - 10, 0.15)
 	tween.tween_property(node, "position:y", origin_y, 0.15)
+
+func _show_ending_screen() -> void:
+	var ending_num = achieved_ending
+	if ending_num == 0:
+		ending_num = 1 # Fallback
+	
+	var drink_name = ""
+	var drink_texture_path = ""
+	if ending_num == 1:
+		drink_name = "MEOWCHA"
+		drink_texture_path = "res://assets/images/meowcha.png"
+	elif ending_num == 2:
+		drink_name = "STRAWBERRY MEOWSHAKE"
+		drink_texture_path = "res://assets/images/strawberrymeowshake.png"
+	elif ending_num == 3:
+		drink_name = "STRAWKITTY MATCHA LATTE"
+		drink_texture_path = "res://assets/images/strawkittymatchalatte.png"
+	
+	var ending_ui = Control.new()
+	ending_ui.set_anchors_preset(Control.PRESET_FULL_RECT)
+	ending_ui.z_index = 100
+	ui.get_node("Root").add_child(ending_ui)
+	
+	var bg = ColorRect.new()
+	bg.color = Color.BLACK
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	ending_ui.add_child(bg)
+	
+	var content = Control.new()
+	content.set_anchors_preset(Control.PRESET_FULL_RECT)
+	ending_ui.add_child(content)
+	
+	var font = choice_a_btn.get_theme_font("font")
+	
+	var title = Label.new()
+	title.text = "ENDING " + str(ending_num) + "/3"
+	title.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_override("font", font)
+	title.add_theme_font_size_override("font_size", 64)
+	title.position.y = 100
+	content.add_child(title)
+	
+	var drink_img = TextureRect.new()
+	drink_img.texture = load(drink_texture_path)
+	drink_img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	drink_img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	drink_img.set_anchors_preset(Control.PRESET_CENTER)
+	drink_img.custom_minimum_size = Vector2(400, 400)
+	drink_img.position = -drink_img.custom_minimum_size / 2
+	content.add_child(drink_img)
+	
+	var drink_label = Label.new()
+	drink_label.text = drink_name
+	drink_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	drink_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	drink_label.add_theme_font_override("font", font)
+	drink_label.add_theme_font_size_override("font_size", 48)
+	drink_label.position.y = -150
+	content.add_child(drink_label)
+	
+	ending_ui.modulate.a = 0.0
+	var tween = create_tween()
+	tween.tween_property(ending_ui, "modulate:a", 1.0, 2.0)
+	
+	_play_sfx("res://assets/sound/sparkle.mp3")
+	
+	await tween.finished
+	
+	await get_tree().create_timer(4.0).timeout
+	
+	var tween2 = create_tween()
+	tween2.tween_property(content, "modulate:a", 0.0, 2.0)
+	await tween2.finished
+	
+	_play_credits(ending_ui)
+
+func _play_credits(parent: Control) -> void:
+	var video = VideoStreamPlayer.new()
+	video.stream = load("res://assets/credits.ogv")
+	video.set_anchors_preset(Control.PRESET_FULL_RECT)
+	video.expand = true
+	video.z_index = 101
+	parent.add_child(video)
+	video.play()
+	
+	video.finished.connect(func():
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	)

@@ -33,6 +33,11 @@ var step: int = 0
 var steps: Array = []
 var waiting_for_choice: bool = false
 var waiting_for_anim: bool = false
+var waiting_for_input: bool = false
+
+var last_words_container: Control
+var last_words_input: LineEdit
+var last_words_submit: Button
 
 func _ready() -> void:
 	outside.visible = true
@@ -56,6 +61,38 @@ func _ready() -> void:
 
 	var mc = Global.player_name
 	build_steps(mc)
+	
+	# Setup Last Words UI
+	last_words_container = Control.new()
+	last_words_container.visible = false
+	last_words_container.set_anchors_preset(Control.PRESET_CENTER)
+	last_words_container.size = Vector2(600, 150)
+	last_words_container.position -= last_words_container.size / 2
+	ui.get_node("Root").add_child(last_words_container)
+	
+	var font = choice_a_btn.get_theme_font("font")
+	
+	last_words_input = LineEdit.new()
+	last_words_input.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	last_words_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	last_words_input.custom_minimum_size.y = 60
+	last_words_input.placeholder_text = "Type your last words..."
+	last_words_input.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	last_words_input.add_theme_font_override("font", font)
+	last_words_input.add_theme_font_size_override("font_size", 24)
+	last_words_container.add_child(last_words_input)
+	
+	last_words_submit = Button.new()
+	last_words_submit.text = "Submit"
+	last_words_submit.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	last_words_submit.size = Vector2(200, 50)
+	last_words_submit.position = Vector2(200, 80)
+	last_words_submit.add_theme_font_override("font", font)
+	last_words_submit.add_theme_font_size_override("font_size", 20)
+	# Use same styles as choice buttons if possible, or just defaults
+	last_words_submit.pressed.connect(_on_last_words_submitted)
+	last_words_container.add_child(last_words_submit)
+	
 	show_step()
 
 func _input(event: InputEvent) -> void:
@@ -107,13 +144,7 @@ func _on_choice_a() -> void:
 		steps.append_array(branch)
 		show_step()
 	elif id == "basement_follow":
-		# Outcome A — unimplemented, placeholder
-		var branch: Array = [
-			{"side": "left", "speaker": mc, "sprite": "mc_default", "text": "..."},
-		]
-		steps.resize(step)
-		steps.append_array(branch)
-		show_step()
+		_ending_device(mc)
 
 func _on_choice_b() -> void:
 	waiting_for_choice = false
@@ -306,9 +337,16 @@ func show_step() -> void:
 	# --- Background ---
 	if s.has("bg"):
 		_set_bg(s["bg"])
+	elif s.has("bg_texture"):
+		_set_bg_texture(s["bg_texture"])
 
 	# --- Characters ---
-	if ending_b.visible:
+	var hide_chars = s.get("no_sprites", false)
+	# Default EndingB behavior (no sprites unless it's the new ending system)
+	if ending_b.visible and not s.has("bg_texture") and not s.has("anim"):
+		hide_chars = true
+		
+	if hide_chars:
 		character_left.visible = false
 		character_right.visible = false
 		character_extra.visible = false
@@ -319,16 +357,17 @@ func show_step() -> void:
 			character_right.visible = s["show_right"]
 	
 		# Left character sprite
-		if s["side"] == "left":
+		if s.get("side") == "left":
 			character_left.visible = true
-			character_left.change_sprite(s["sprite"])
+			if s.has("sprite"):
+				character_left.change_sprite(s["sprite"])
 	
 		# Right character sprite
-		if s["side"] == "right":
+		if s.get("side") == "right":
 			character_right.visible = true
 			if s.has("swap_right"):
 				character_right.change_sprite(s["swap_right"])
-			else:
+			elif s.has("sprite"):
 				character_right.change_sprite(s["sprite"])
 	
 		# Extra character (Billy/Gato appearing next to Kitika)
@@ -344,21 +383,21 @@ func show_step() -> void:
 		syrup.visible = true
 
 	# --- Dialogue ---
-	if s["side"] == "left":
+	if s.get("side") == "left":
 		chatbox_left.visible = true
 		chatbox_right.visible = false
-		speaker_left.text = s["speaker"]
-		ui.typewriter(dialogue_left, s["text"])
+		speaker_left.text = s.get("speaker", "")
+		ui.typewriter(dialogue_left, s.get("text", ""))
 		
 		# Darken inactive side
 		character_left.modulate = Color(1, 1, 1)
 		character_right.modulate = Color(0.5, 0.5, 0.5)
 		character_extra.modulate = Color(0.5, 0.5, 0.5)
-	else:
+	elif s.get("side") == "right":
 		chatbox_right.visible = true
 		chatbox_left.visible = false
-		speaker_right.text = s["speaker"]
-		ui.typewriter(dialogue_right, s["text"])
+		speaker_right.text = s.get("speaker", "")
+		ui.typewriter(dialogue_right, s.get("text", ""))
 		
 		# Darken inactive side
 		character_left.modulate = Color(0.5, 0.5, 0.5)
@@ -371,8 +410,16 @@ func show_step() -> void:
 	else:
 		ui.TYPEWRITER_SPEED = 0.02
 
+	# --- Last Words Input ---
+	if s.get("last_words", false):
+		waiting_for_input = true
+		last_words_container.visible = true
+		last_words_input.grab_focus()
+	else:
+		last_words_container.visible = false
+
 func _on_dialogue_button_pressed() -> void:
-	if waiting_for_choice or waiting_for_anim:
+	if waiting_for_choice or waiting_for_anim or waiting_for_input:
 		return
 	if ui.is_typing():
 		ui.typewriter_skip()
@@ -389,7 +436,9 @@ func _set_bg(bg_name: String) -> void:
 		"inside_night": inside_night.visible = true
 		"stairs": stairs.visible = true
 		"basement": basement.visible = true
-		"ending_b": ending_b.visible = true
+		"ending_b": 
+			ending_b.texture = load("res://assets/backgrounds/ending1_1.png")
+			ending_b.visible = true
 
 func _hide_all_bgs() -> void:
 	outside.visible = false
@@ -398,6 +447,12 @@ func _hide_all_bgs() -> void:
 	stairs.visible = false
 	basement.visible = false
 	ending_b.visible = false
+	syrup.visible = false
+
+func _set_bg_texture(path: String) -> void:
+	_hide_all_bgs()
+	ending_b.texture = load(path)
+	ending_b.visible = true
 
 # --- Animation sequences ---
 func _play_anim(anim_name: String) -> void:
@@ -409,6 +464,8 @@ func _play_anim(anim_name: String) -> void:
 			await _anim_fade_to_stairs()
 		"fade_to_basement":
 			await _anim_fade_to_basement()
+		"ending3_start":
+			await _anim_ending3_start()
 		"the_end":
 			await _anim_the_end()
 	waiting_for_anim = false
@@ -521,6 +578,88 @@ func _anim_the_end() -> void:
 
 	# TODO: Show "THE END" text or transition to credits/menu
 	# get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+func _anim_ending3_start() -> void:
+	chatbox_left.visible = false
+	chatbox_right.visible = false
+	character_left.visible = false
+	character_right.visible = false
+	
+	# Fade to black before ending3_1.png
+	dark_overlay.visible = true
+	dark_overlay.modulate.a = 0.0
+	var fade_out_screen = create_tween()
+	fade_out_screen.tween_property(dark_overlay, "modulate:a", 1.0, 0.5)
+	await fade_out_screen.finished
+	
+	# Show ending3_1
+	_set_bg_texture("res://assets/backgrounds/ending3_1.png")
+	
+	# Fade back in to reveal ending3_1
+	var fade_in_screen = create_tween()
+	fade_in_screen.tween_property(dark_overlay, "modulate:a", 0.0, 0.5)
+	await fade_in_screen.finished
+	dark_overlay.visible = false
+	
+	await get_tree().create_timer(1.0).timeout
+	
+	# Fade to ending3_2
+	var fade_tr = TextureRect.new()
+	fade_tr.texture = load("res://assets/backgrounds/ending3_2.png")
+	fade_tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	fade_tr.set_anchors_preset(Control.PRESET_FULL_RECT)
+	fade_tr.modulate.a = 0.0
+	$Backgrounds.add_child(fade_tr)
+	
+	var tween = create_tween()
+	tween.tween_property(fade_tr, "modulate:a", 1.0, 1.0)
+	await tween.finished
+	
+	# Now set the main ending_b to 3_2 and remove the temp one
+	ending_b.texture = fade_tr.texture
+	fade_tr.queue_free()
+
+func _ending_device(mc: String) -> void:
+	waiting_for_anim = true
+	chatbox_left.visible = false
+	chatbox_right.visible = false
+	character_left.visible = false
+	character_right.visible = false
+	
+	steps.resize(step)
+	steps.append({"anim": "ending3_start"})
+	steps.append({
+		"bg_texture": "res://assets/backgrounds/ending3_2.png",
+		"side": "right", "speaker": "Kitika", "sprite": "kitika_hmm",
+		"text": "Well, well, well, I’m really sorry it had to end this way. NOT. Silly " + mc + ", you agreed to this…"
+	})
+	steps.append({
+		"bg_texture": "res://assets/backgrounds/ending3_3.png",
+		"no_sprites": true,
+		"side": "right", "speaker": "Kitika",
+		"text": "The secret ingredient was innocent little kittens like you, my dear " + mc + "."
+	})
+	steps.append({
+		"bg_texture": "res://assets/backgrounds/ending3_4.png",
+		"last_words": true,
+		"side": "right", "speaker": "Kitika",
+		"text": "Any last words?"
+	})
+	steps.append({
+		"bg_texture": "res://assets/backgrounds/ending3_5.png",
+		"no_sprites": true,
+		"side": "right", "speaker": "Kitika",
+		"text": "Okay, I don’t really care, you feline. I think I’ll start with your tail, it’s the ingredient for our most popular drink; strawkitty matcha latte."
+	})
+	steps.append({"anim": "the_end"})
+	
+	show_step()
+
+func _on_last_words_submitted() -> void:
+	waiting_for_input = false
+	last_words_container.visible = false
+	step += 1
+	show_step()
 
 func _ending_run(mc: String) -> void:
 	waiting_for_anim = true

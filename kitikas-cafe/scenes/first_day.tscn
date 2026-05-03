@@ -10,6 +10,17 @@
 [ext_resource type="Texture2D" uid="uid://b6htamr7plaff" path="res://assets/backgrounds/stairs.png" id="8_stairs"]
 [ext_resource type="Texture2D" uid="uid://4ob2bjcbkcbw" path="res://assets/backgrounds/ending1_1.png" id="9_ending"]
 [ext_resource type="Texture2D" uid="uid://dj0888hlli7dr" path="res://assets/images/syrup.png" id="10_syrup"]
+[ext_resource type="Texture2D" uid="uid://mukt1suxyuga" path="res://assets/images/buttons/optionsbox.png" id="11_hiq5w"]
+[ext_resource type="Texture2D" uid="uid://63sdp3maauyj" path="res://assets/images/buttons/optionsboxmask.png" id="12_xsu4p"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dy8h0"]
+texture = ExtResource("11_hiq5w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i4u10"]
+texture = ExtResource("12_xsu4p")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5vo8l"]
+texture = ExtResource("12_xsu4p")
 
 [node name="FirstDay" type="Control" unique_id=590105826]
 layout_mode = 3
@@ -158,15 +169,21 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -40.0
-offset_right = 200.0
-offset_bottom = 10.0
+offset_left = -250.0
+offset_top = -74.0
+offset_right = 250.0
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_font")
 theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxTexture_dy8h0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_i4u10")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5vo8l")
 text = "Choice A"
+autowrap_mode = 3
 
 [node name="ChoiceB" type="Button" parent="UI/Root" parent_id_path=PackedInt32Array(1332173803, 1365279054) index="6" unique_id=1119147387]
 layout_mode = 1
@@ -175,14 +192,20 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = 20.0
-offset_right = 200.0
-offset_bottom = 70.0
+offset_left = -250.0
+offset_top = 3.0
+offset_right = 250.0
+offset_bottom = 78.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("6_font")
 theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxTexture_dy8h0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_i4u10")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5vo8l")
 text = "Choice B"
+autowrap_mode = 3
 
 [editable path="UI"]

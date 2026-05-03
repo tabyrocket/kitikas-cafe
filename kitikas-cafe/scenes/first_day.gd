@@ -849,7 +849,7 @@ func _play_freezer_cutscene(melonrip_player: AudioStreamPlayer = null) -> void:
 		)
 		
 		for file in final_files:
-			if file == "freezer_2.png" and melonrip_player:
+			if file == "freezer_1.png" and melonrip_player:
 				melonrip_player.stop()
 				melonrip_player.queue_free()
 				melonrip_player = null

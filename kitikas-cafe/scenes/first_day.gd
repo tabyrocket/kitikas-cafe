@@ -1,5 +1,8 @@
 extends Control
 
+@export var freezer_frame_duration: float = 1.0
+@export var freezer_transition_length: float = 1.0
+
 # References
 @onready var outside: TextureRect = $Backgrounds/Outside
 @onready var inside: TextureRect = $Backgrounds/Inside
@@ -453,8 +456,53 @@ func _anim_the_end() -> void:
 	# Hold for dramatic pause
 	await get_tree().create_timer(3.0).timeout
 
+	# Play the freezer cutscene at the very end
+	await _play_freezer_cutscene()
+
 	# TODO: Show "THE END" text or transition to credits/menu
 	# get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+func _play_freezer_cutscene() -> void:
+	var cutscene_parent = Control.new()
+	cutscene_parent.set_anchors_preset(Control.PRESET_FULL_RECT)
+	$Backgrounds.add_child(cutscene_parent)
+	
+	var dir = DirAccess.open("res://assets/freezer-cutscene")
+	var final_files = []
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if file_name.ends_with(".import"):
+				var actual_file = file_name.replace(".import", "")
+				if not final_files.has(actual_file):
+					final_files.append(actual_file)
+			elif file_name.ends_with(".png") or file_name.ends_with(".jpg"):
+				if not final_files.has(file_name):
+					final_files.append(file_name)
+			file_name = dir.get_next()
+			
+		final_files.sort_custom(func(a, b):
+			var num_a = a.get_basename().trim_prefix("freezer_").to_int()
+			var num_b = b.get_basename().trim_prefix("freezer_").to_int()
+			return num_a < num_b
+		)
+		
+		for file in final_files:
+			var tex = load("res://assets/freezer-cutscene/" + file)
+			if tex:
+				var tr = TextureRect.new()
+				tr.texture = tex
+				tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				tr.set_anchors_preset(Control.PRESET_FULL_RECT)
+				tr.modulate.a = 0.0
+				cutscene_parent.add_child(tr)
+				
+				var tween = create_tween()
+				tween.tween_property(tr, "modulate:a", 1.0, freezer_transition_length)
+				await tween.finished
+				
+				await get_tree().create_timer(freezer_frame_duration).timeout
 
 func _bob_character(node: TextureRect) -> void:
 	var tween = create_tween().set_loops(3)

@@ -2,10 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://bar3j6f4f7wfe" path="res://assets/images/chatboxleft.png" id="1_h22n5"]
 [ext_resource type="Script" uid="uid://cet3rp2bg344g" path="res://scenes/ui.gd" id="1_ua6yw"]
-[ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="2_ro3t7"]
+[ext_resource type="FontFile" uid="uid://c708yr41v4hbt" path="res://assets/fonts/Merriweather-VariableFont_opsz,wdth,wght.ttf" id="3_ilk7v"]
 [ext_resource type="Texture2D" uid="uid://dii3c1jcw06g6" path="res://assets/images/buttons/pausebuttonmask.png" id="4_3wlde"]
 [ext_resource type="Texture2D" uid="uid://48ch0jct640n" path="res://assets/images/chatboxright.png" id="4_7paak"]
 [ext_resource type="Texture2D" uid="uid://kol4nnje74b" path="res://assets/images/buttons/pausebutton.png" id="4_75u2n"]
+[ext_resource type="FontFile" uid="uid://chjcljn5eyawn" path="res://assets/fonts/Merriweather-Italic-VariableFont_opsz,wdth,wght.ttf" id="4_flkkw"]
 [ext_resource type="Texture2D" uid="uid://dv4koe5jtd1nq" path="res://assets/images/buttons/menubg.png" id="6_w7enk"]
 [ext_resource type="Texture2D" uid="uid://da848tl854q5j" path="res://assets/images/buttons/pausemenubuttons_resume.png" id="7_w7enk"]
 [ext_resource type="AudioStream" uid="uid://cao8iwey36p3y" path="res://assets/sound/animal-crossing-talking-made-with-Voicemod.mp3" id="7_xpksx"]
@@ -39,7 +40,7 @@ texture = ExtResource("4_3wlde")
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mhjpf"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7paak"]
-font = ExtResource("2_ro3t7")
+font = ExtResource("3_ilk7v")
 font_size = 28
 font_color = Color(0.71, 0.40469998, 0.61332166, 1)
 
@@ -84,8 +85,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("2_ro3t7")
+theme_override_fonts/normal_font = ExtResource("3_ilk7v")
+theme_override_fonts/italics_font = ExtResource("4_flkkw")
 theme_override_font_sizes/normal_font_size = 200
+theme_override_font_sizes/italics_font_size = 200
+bbcode_enabled = true
 text = "Meow meow meow"
 
 [node name="Speaker" type="RichTextLabel" parent="Root/ChatboxLeft" unique_id=1939808351]
@@ -101,8 +105,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("2_ro3t7")
+theme_override_fonts/normal_font = ExtResource("3_ilk7v")
+theme_override_fonts/italics_font = ExtResource("4_flkkw")
 theme_override_font_sizes/normal_font_size = 200
+theme_override_font_sizes/italics_font_size = 200
 text = "MC"
 horizontal_alignment = 1
 
@@ -148,8 +154,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("2_ro3t7")
+theme_override_fonts/normal_font = ExtResource("3_ilk7v")
+theme_override_fonts/italics_font = ExtResource("4_flkkw")
 theme_override_font_sizes/normal_font_size = 200
+theme_override_font_sizes/italics_font_size = 200
+bbcode_enabled = true
 text = "Meow meow meow"
 
 [node name="Speaker2" type="RichTextLabel" parent="Root/ChatboxRight" unique_id=20231141]
@@ -165,8 +174,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("2_ro3t7")
+theme_override_fonts/normal_font = ExtResource("3_ilk7v")
+theme_override_fonts/italics_font = ExtResource("4_flkkw")
 theme_override_font_sizes/normal_font_size = 200
+theme_override_font_sizes/italics_font_size = 200
 text = "MC"
 horizontal_alignment = 1
 

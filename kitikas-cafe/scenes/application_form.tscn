@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cohvqguq5pj7m" path="res://scenes/application_form.gd" id="1_acsx3"]
 [ext_resource type="Texture2D" uid="uid://dx0jg08ynpsf1" path="res://assets/images/applying form.jpg" id="1_k3dbd"]
 [ext_resource type="Texture2D" uid="uid://c0nj788fe3nuo" path="res://assets/backgrounds/kitikas_cafe_outside_zoomed.png" id="2_2xomt"]
-[ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="2_smwiq"]
+[ext_resource type="FontFile" uid="uid://c708yr41v4hbt" path="res://assets/fonts/Merriweather-VariableFont_opsz,wdth,wght.ttf" id="4_2xomt"]
 [ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="4_cktnt"]
 [ext_resource type="Texture2D" uid="uid://cbbmgc5tas2lb" path="res://assets/backgrounds/oneweeklater.png" id="5_2xomt"]
 
@@ -78,7 +78,7 @@ offset_right = 338.0
 offset_bottom = 310.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("2_smwiq")
+theme_override_fonts/font = ExtResource("4_2xomt")
 text = "Sign"
 
 [node name="TwoDaysLater" type="TextureRect" parent="." unique_id=1521026455]

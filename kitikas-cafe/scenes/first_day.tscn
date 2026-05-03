@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://cmqrwb8pcfmok" path="res://scenes/UI.tscn" id="3_c67ln"]
 [ext_resource type="Texture2D" uid="uid://dwiwqq3d37ta0" path="res://assets/backgrounds/cafe_inside_day.png" id="3_nmhqs"]
 [ext_resource type="PackedScene" uid="uid://c4xqrijixwupo" path="res://scenes/character.tscn" id="4_nmhqs"]
-[ext_resource type="FontFile" uid="uid://df6tqnr6ibu1k" path="res://assets/fonts/star-crush.regular.ttf" id="6_font"]
 [ext_resource type="Texture2D" uid="uid://dj02ajfspn3fb" path="res://assets/backgrounds/cafe_inside_night.png" id="7_night"]
 [ext_resource type="Texture2D" uid="uid://dpopfcxi2a2yb" path="res://assets/images/clock/frame_00_delay-0.12s.png" id="8_2it71"]
 [ext_resource type="Texture2D" uid="uid://b6htamr7plaff" path="res://assets/backgrounds/stairs.png" id="8_stairs"]
@@ -26,6 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://k1ngfow8k72a" path="res://assets/images/clock/frame_07_delay-0.12s.png" id="17_gj84l"]
 [ext_resource type="Texture2D" uid="uid://uc3pt67o6nxe" path="res://assets/images/clock/frame_08_delay-0.12s.png" id="18_1nyou"]
 [ext_resource type="Texture2D" uid="uid://cq7ad6yh22676" path="res://assets/images/clock/frame_09_delay-0.12s.png" id="19_har84"]
+[ext_resource type="FontFile" uid="uid://c708yr41v4hbt" path="res://assets/fonts/Merriweather-VariableFont_opsz,wdth,wght.ttf" id="23_2it71"]
 
 [sub_resource type="AnimatedTexture" id="AnimatedTexture_i8qae"]
 frames = 12
@@ -239,7 +239,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("6_font")
+theme_override_fonts/font = ExtResource("23_2it71")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxTexture_dy8h0")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_i4u10")
@@ -262,7 +262,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("6_font")
+theme_override_fonts/font = ExtResource("23_2it71")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxTexture_dy8h0")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_i4u10")

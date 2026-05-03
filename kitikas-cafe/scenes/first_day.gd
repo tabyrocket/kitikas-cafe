@@ -221,8 +221,8 @@ func _common_steps(mc: String) -> Array:
 		 "text": "I doubt I'll have to teach you much."},
 		{"side": "right", "speaker": "Kitika", "sprite": "kitika_default",
 		 "text": "I was very impressed by all the experience you had on your resume."},
-		{"side": "left", "speaker": mc + " (thinking)", "sprite": "mc_nervous",
-		 "text": "ACK IM SO DIDDLY DARN STUPDOODLES, I LIED.\n…I guess I'll just have to figure it out."},
+		{"side": "left", "speaker": mc, "sprite": "mc_nervous",
+		 "text": "[i]ACK IM SO DIDDLY DARN STUPDOODLES, I LIED.\n…I guess I'll just have to figure it out.[/i]"},
 		{"side": "left", "speaker": mc, "sprite": "mc_bashful",
 		 "text": "Yeah...haha"},
 
@@ -230,8 +230,8 @@ func _common_steps(mc: String) -> Array:
 		 "text": "Well, you won't actually need most of your training yet. Our drinks are pretty simple."},
 		{"side": "left", "speaker": mc, "sprite": "mc_default",
 		 "text": "Ah, okay!"},
-		{"side": "left", "speaker": mc + " (thinking)", "sprite": "mc_bashful",
-		 "text": "thank the cat lords"},
+		{"side": "left", "speaker": mc, "sprite": "mc_bashful",
+		 "text": "[i]thank the cat lords[/i]"},
 
 		# --- Syrup revelation ---
 		{"side": "right", "speaker": "Kitika", "sprite": "kitika_default",
@@ -262,8 +262,8 @@ func _common_steps(mc: String) -> Array:
 		 "text": "Don't worry,"},
 		{"side": "right", "speaker": "Kitika", "sprite": "kitika_smirk",
 		 "text": "I'll make sure you rest forever...", "suspense": true},
-		{"side": "left", "speaker": mc + " (thinking)", "sprite": "mc_bashful",
-		 "text": "That's a weird thing to say..."},
+		{"side": "left", "speaker": mc, "sprite": "mc_bashful",
+		 "text": "[i]That's a weird thing to say...[/i]"},
 		{"side": "right", "speaker": "Kitika", "sprite": "kitika_default",
 		 "text": "OKAY! My super awesome syrup making is downstairs in the basement, let's go!"},
 

@@ -1,7 +1,7 @@
 extends Control
 
 @export var freezer_frame_duration: float = 1.0
-@export var freezer_transition_length: float = 1.0
+@export var freezer_transition_length: float = 0.5
 
 # References
 @onready var outside: TextureRect = $Backgrounds/Outside
@@ -906,6 +906,13 @@ func _show_ending_screen() -> void:
 	_play_credits(ending_ui)
 
 func _play_credits(parent: Control) -> void:
+	# Get the current volume of the master bus
+	var original_master_volume = AudioServer.get_bus_volume_db(0)  # 0 is the master bus
+
+	# Lower the master bus volume
+	AudioServer.set_bus_volume_db(0, -10.0)
+
+	# Create and play the video
 	var video = VideoStreamPlayer.new()
 	video.stream = load("res://assets/credits.ogv")
 	video.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -913,7 +920,8 @@ func _play_credits(parent: Control) -> void:
 	video.z_index = 101
 	parent.add_child(video)
 	video.play()
-	
+
 	video.finished.connect(func():
+		AudioServer.set_bus_volume_db(0, original_master_volume)  # Reset to original volume
 		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 	)

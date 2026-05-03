@@ -11,6 +11,8 @@ extends Control
 @onready var character_left: TextureRect = $CharacterLeft
 @onready var character_right: TextureRect = $CharacterRight
 @onready var character_extra: TextureRect = $CharacterExtra
+@onready var stab_sound: AudioStreamPlayer = $StabSound
+
 
 @onready var ui: CanvasLayer = $UI
 @onready var chatbox_left: TextureRect = $UI/Root/ChatboxLeft
@@ -232,6 +234,8 @@ func _ending_b(mc: String) -> void:
 	var fade = create_tween()
 	fade.tween_property(dark_overlay, "modulate:a", 1.0, 1.0)
 	await fade.finished
+
+	stab_sound.play()
 
 	# Switch to ending bg
 	_hide_all_bgs()

@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dj0888hlli7dr" path="res://assets/images/syrup.png" id="10_syrup"]
 [ext_resource type="Texture2D" uid="uid://mukt1suxyuga" path="res://assets/images/buttons/optionsbox.png" id="11_hiq5w"]
 [ext_resource type="Texture2D" uid="uid://63sdp3maauyj" path="res://assets/images/buttons/optionsboxmask.png" id="12_xsu4p"]
+[ext_resource type="AudioStream" uid="uid://8n2ck4foqx28" path="res://assets/sound/knifestab.mp3" id="13_xsu4p"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dy8h0"]
 texture = ExtResource("11_hiq5w")
@@ -207,5 +208,9 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_i4u10")
 theme_override_styles/hover = SubResource("StyleBoxTexture_5vo8l")
 text = "Choice B"
 autowrap_mode = 3
+
+[node name="StabSound" type="AudioStreamPlayer" parent="." unique_id=1426489816]
+stream = ExtResource("13_xsu4p")
+bus = &"SFX"
 
 [editable path="UI"]

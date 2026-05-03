@@ -39,6 +39,16 @@ func _on_dialogue_button_pressed():
 		transition()
 
 func _ready() -> void:
+	# Fade in from black
+	var black = ColorRect.new()
+	black.color = Color.BLACK
+	black.set_anchors_preset(Control.PRESET_FULL_RECT)
+	ui.get_node("Root").add_child(black)
+	
+	var tween = create_tween()
+	tween.tween_property(black, "modulate:a", 0.0, 1.0)
+	tween.finished.connect(black.queue_free)
+
 	two_days_later.visible = false
 	images = [mc_house, laptop_screen, laptop_email_1, laptop_email_2, acceptance_letter, acceptance_letter]
 	update_img()
@@ -63,10 +73,16 @@ func update_img() -> void:
 	images[current_image].visible = true
 
 func transition() -> void:
-	two_days_later.visible = true
-	two_days_timer.start()
+	# Hide UI immediately
 	chatbox_left.visible = false
 	ui.main_dialogue_button.visible = false
+	
+	two_days_later.modulate.a = 0.0
+	two_days_later.visible = true
+	var tween = create_tween()
+	tween.tween_property(two_days_later, "modulate:a", 1.0, 1.0)
+	await tween.finished
+	two_days_timer.start()
 
 func _on_dialogue_cooldown_timeout() -> void:
 	# Dialogue
@@ -78,4 +94,13 @@ func _on_dialogue_cooldown_timeout() -> void:
 
 
 func _on_two_days_timer_timeout() -> void:
+	var black = ColorRect.new()
+	black.color = Color.BLACK
+	black.set_anchors_preset(Control.PRESET_FULL_RECT)
+	black.modulate.a = 0.0
+	ui.get_node("Root").add_child(black)
+	
+	var tween = create_tween()
+	tween.tween_property(black, "modulate:a", 1.0, 1.0)
+	await tween.finished
 	get_tree().change_scene_to_file("res://scenes/first_day.tscn")

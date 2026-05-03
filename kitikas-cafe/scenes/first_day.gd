@@ -51,7 +51,8 @@ func _ready() -> void:
 	basement.visible = false
 	ending_b.visible = false
 	syrup.visible = false
-	dark_overlay.visible = false
+	dark_overlay.visible = true
+	dark_overlay.modulate.a = 1.0
 	clock.visible = false
 	character_left.visible = false
 	character_right.visible = false
@@ -108,11 +109,13 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func build_steps(mc: String) -> void:
 	steps = [
+		{"anim": "fade_in_start"},
 		# --- Outside ---
 		{"bg": "outside", "side": "left", "speaker": mc, "sprite": "mc_default",
 		 "text": "Alright, here goes nothing…"},
 
 		# --- Inside, meet Kitika ---
+		{"anim": "fade_to_inside"},
 		{"bg": "inside", "side": "right", "speaker": "Kitika", "sprite": "kitika_default",
 		 "right_sprite": "kitika_default", "left_sprite": "mc_default", "show_left": true,
 		 "text": "Hiya! You must be " + mc + "! It's so nice to meet you. How are you?"},
@@ -149,6 +152,11 @@ func _on_choice_a() -> void:
 		steps.resize(step)
 		steps.append_array(branch)
 		show_step()
+		
+		var bgm = get_node_or_null("/root/BGM")
+		if bgm:
+			bgm.stream = load("res://assets/sound/eerie.mp3")
+			bgm.play()
 		
 		creaky_stairs_player = _play_sfx("res://assets/sound/creaky-stairs.mp3")
 	elif id == "basement_follow":
@@ -277,7 +285,7 @@ func _common_steps(mc: String) -> Array:
 		{"side": "right", "speaker": "Kitika", "sprite": "kitika_default",
 		 "text": "Don't be scared, everything downstairs is perfectly normal and legal."},
 		{"side": "left", "speaker": mc, "sprite": "mc_nervous",
-		 "text": "*GULP*"},
+		 "text": "*GULP*", "play_sfx": "res://assets/sound/gulp.mp3"},
 
 		# --- Choice 2: follow or leave ---
 		{"choice": true, "id": "basement",
@@ -479,6 +487,10 @@ func _set_bg_texture(path: String) -> void:
 func _play_anim(anim_name: String) -> void:
 	waiting_for_anim = true
 	match anim_name:
+		"fade_in_start":
+			await _anim_fade_in_start()
+		"fade_to_inside":
+			await _anim_fade_to_inside()
 		"time_skip":
 			await _anim_time_skip()
 		"fade_to_stairs":
@@ -494,6 +506,45 @@ func _play_anim(anim_name: String) -> void:
 	waiting_for_anim = false
 	step += 1
 	show_step()
+
+func _anim_fade_in_start() -> void:
+	# Start black (already handled in _ready)
+	# Reveal outside
+	_hide_all_bgs()
+	outside.visible = true
+	
+	var fade = create_tween()
+	fade.tween_property(dark_overlay, "modulate:a", 0.0, 1.5)
+	await fade.finished
+	dark_overlay.visible = false
+	
+	await get_tree().create_timer(2.0).timeout
+
+func _anim_fade_to_inside() -> void:
+	chatbox_left.visible = false
+	chatbox_right.visible = false
+	character_left.visible = false
+	character_right.visible = false
+	
+	# Fade to black
+	dark_overlay.visible = true
+	dark_overlay.modulate.a = 0.0
+	var fade_in = create_tween()
+	fade_in.tween_property(dark_overlay, "modulate:a", 1.0, 0.8)
+	await fade_in.finished
+	
+	# Switch bg while black
+	_hide_all_bgs()
+	inside.visible = true
+	
+	# Fade back in
+	var fade_out = create_tween()
+	fade_out.tween_property(dark_overlay, "modulate:a", 0.0, 0.8)
+	await fade_out.finished
+	dark_overlay.visible = false
+	
+	# Hold for 2 seconds
+	await get_tree().create_timer(2.0).timeout
 
 func _anim_time_skip() -> void:
 	# Hide chatboxes, characters, and syrup
@@ -534,15 +585,18 @@ func _anim_time_skip() -> void:
 	# Hold on clock
 	await get_tree().create_timer(2.0).timeout
 
+	if is_instance_valid(clock_sound):
+		clock_sound.stop()
+		clock_sound.queue_free()
+
 	# Fade out clock
 	var clock_fade_out = create_tween()
 	clock_fade_out.tween_property(clock, "modulate:a", 0.0, 1.2)
 	await clock_fade_out.finished
 	clock.visible = false
 	
-	if is_instance_valid(clock_sound):
-		clock_sound.stop()
-		clock_sound.queue_free()
+	# Hold on inside night
+	await get_tree().create_timer(2.0).timeout
 
 func _anim_fade_to_stairs() -> void:
 	chatbox_left.visible = false
@@ -598,6 +652,9 @@ func _anim_fade_to_basement() -> void:
 	fade_out.tween_property(dark_overlay, "modulate:a", 0.0, 2.0)
 	await fade_out.finished
 	dark_overlay.visible = false
+	
+	# Hold on basement
+	await get_tree().create_timer(3.0).timeout
 
 func _anim_the_end() -> void:
 	chatbox_left.visible = false
@@ -617,6 +674,14 @@ func _anim_the_end() -> void:
 
 	# Hold for dramatic pause
 	await get_tree().create_timer(3.0).timeout
+	
+	if melonrip_player:
+		melonrip_player.stop()
+		melonrip_player.queue_free()
+		melonrip_player = null
+		
+	# Hold on black screen after audio stops
+	await get_tree().create_timer(2.0).timeout
 
 	# Clear any previous cutscene layers before starting the final one
 	for child in $Backgrounds.get_children():
@@ -624,7 +689,7 @@ func _anim_the_end() -> void:
 			child.queue_free()
 
 	# Play the freezer cutscene at the very end
-	await _play_freezer_cutscene(melonrip_player)
+	await _play_freezer_cutscene()
 
 	await _show_ending_screen()
 
@@ -818,7 +883,11 @@ func _play_ending2_cutscene() -> void:
 			tween.tween_property(tr, "modulate:a", 1.0, freezer_transition_length)
 			await tween.finished
 			
-			await get_tree().create_timer(1.5).timeout
+			var duration = 1.5
+			if path.ends_with("ending2_3.png"):
+				duration += 3.0
+				
+			await get_tree().create_timer(duration).timeout
 
 func _play_freezer_cutscene(melonrip_player: AudioStreamPlayer = null) -> void:
 	var cutscene_parent = Control.new()
@@ -875,10 +944,14 @@ func _play_freezer_cutscene(melonrip_player: AudioStreamPlayer = null) -> void:
 				tween.tween_property(tr, "modulate:a", 1.0, freezer_transition_length)
 				await tween.finished
 				
+				var duration = freezer_frame_duration
 				if file == "freezer_8.png":
-					await get_tree().create_timer(3.0).timeout
-				else:
-					await get_tree().create_timer(freezer_frame_duration).timeout
+					duration = 3.0
+				
+				if file == "freezer_10.png":
+					duration += 3.0
+					
+				await get_tree().create_timer(duration).timeout
 
 	if melonrip_player:
 		melonrip_player.stop()
@@ -981,19 +1054,62 @@ func _play_credits(parent: Control) -> void:
 	# Get the current volume of the master bus
 	var original_master_volume = AudioServer.get_bus_volume_db(0)  # 0 is the master bus
 
-	# Lower the master bus volume
-	AudioServer.set_bus_volume_db(0, -10.0)
+	# Lower the master bus volume slightly for the sad song
+	AudioServer.set_bus_volume_db(0, -5.0)
 
-	# Create and play the video
-	var video = VideoStreamPlayer.new()
-	video.stream = load("res://assets/credits.ogv")
-	video.set_anchors_preset(Control.PRESET_FULL_RECT)
-	video.expand = true
-	video.z_index = 101
-	parent.add_child(video)
-	video.play()
-
-	video.finished.connect(func():
-		AudioServer.set_bus_volume_db(0, original_master_volume)  # Reset to original volume
-		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
-	)
+	# Setup Credits UI
+	var credits_container = Control.new()
+	credits_container.set_anchors_preset(Control.PRESET_FULL_RECT)
+	parent.add_child(credits_container)
+	
+	var bg = ColorRect.new()
+	bg.color = Color.BLACK
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	credits_container.add_child(bg)
+	
+	var credits_text = Label.new()
+	credits_text.text = "Kitika's Cafe\n\n\nVisual Directors\nRyral and staara\n\n\nSoftware Developer\ntabyrocket\n\n\nNarrative Directors\nRyral and staara\n\n\n\nProduced by\nSuper Awesome Cat Game\n\n\n© 2026. All rights reserved."
+	credits_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	
+	# Font setup
+	var font = load("res://assets/fonts/Merriweather-VariableFont_opsz,wdth,wght.ttf")
+	credits_text.add_theme_font_override("font", font)
+	credits_text.add_theme_font_size_override("font_size", 40)
+	credits_text.add_theme_constant_override("line_spacing", 10)
+	
+	credits_container.add_child(credits_text)
+	
+	# Initial position at bottom of screen
+	var screen_size = get_viewport_rect().size
+	credits_text.custom_minimum_size.x = screen_size.x
+	credits_text.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	credits_text.position = Vector2(0, screen_size.y)
+	
+	# Music
+	var music = AudioStreamPlayer.new()
+	music.stream = load("res://assets/sound/sad-meow-song.mp3")
+	music.bus = "SFX"
+	add_child(music)
+	music.play()
+	
+	# Animation: Move up from bottom to above the screen
+	var scroll_tween = create_tween()
+	var scroll_duration = 20.0
+	var final_y = -credits_text.get_combined_minimum_size().y - 100
+	
+	scroll_tween.tween_property(credits_text, "position:y", final_y, scroll_duration)
+	
+	await scroll_tween.finished
+	
+	# Fade out the whole container
+	var fade_out = create_tween()
+	fade_out.tween_property(credits_container, "modulate:a", 0.0, 2.0)
+	await fade_out.finished
+	
+	# Cleanup music
+	if is_instance_valid(music):
+		music.stop()
+		music.queue_free()
+	
+	AudioServer.set_bus_volume_db(0, original_master_volume)  # Reset to original volume
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

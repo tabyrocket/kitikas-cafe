@@ -167,9 +167,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -281.0
+offset_left = -252.0
 offset_top = -350.0
-offset_right = 257.0
+offset_right = 286.0
 offset_bottom = 169.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -223,6 +223,12 @@ grow_vertical = 2
 scale = Vector2(0.35, 0.35)
 
 [node name="UI" parent="." unique_id=1332173803 instance=ExtResource("3_c67ln")]
+
+[node name="ChatboxLeft" parent="UI/Root" parent_id_path=PackedInt32Array(1332173803, 1365279054) index="0" unique_id=1864751054]
+mouse_filter = 1
+
+[node name="ChatboxRight" parent="UI/Root" parent_id_path=PackedInt32Array(1332173803, 1365279054) index="1" unique_id=1377130430]
+mouse_filter = 1
 
 [node name="ChoiceA" type="Button" parent="UI/Root" parent_id_path=PackedInt32Array(1332173803, 1365279054) index="5" unique_id=265974548]
 layout_mode = 1

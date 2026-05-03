@@ -39,6 +39,8 @@ var last_words_container: Control
 var last_words_input: LineEdit
 var last_words_submit: Button
 
+var creaky_stairs_player: AudioStreamPlayer
+
 func _ready() -> void:
 	outside.visible = true
 	inside.visible = false
@@ -143,6 +145,8 @@ func _on_choice_a() -> void:
 		steps.resize(step)
 		steps.append_array(branch)
 		show_step()
+		
+		creaky_stairs_player = _play_sfx("res://assets/sound/creaky-stairs.mp3")
 	elif id == "basement_follow":
 		_ending_device(mc)
 
@@ -485,11 +489,25 @@ func _anim_time_skip() -> void:
 	dark_overlay.modulate.a = 0.0
 	var fade_in = create_tween()
 	fade_in.tween_property(dark_overlay, "modulate:a", 1.0, 1.2)
+	
+	var bgm = get_node_or_null("/root/BGM")
+	var orig_vol = -20.982
+	if bgm:
+		orig_vol = bgm.volume_db
+		var vol_fade_out = create_tween()
+		vol_fade_out.tween_property(bgm, "volume_db", -80.0, 1.2)
+		
 	await fade_in.finished
 
 	# Switch bg while black
 	_hide_all_bgs()
 	inside_night.visible = true
+
+	if bgm:
+		bgm.stream = load("res://assets/sound/creepy-industrial-sounds-ambience.mp3")
+		bgm.play()
+		var vol_fade_in = create_tween()
+		vol_fade_in.tween_property(bgm, "volume_db", orig_vol, 1.2)
 
 	# Hold on black (clock moment)
 	await get_tree().create_timer(2.0).timeout
@@ -541,6 +559,11 @@ func _anim_fade_to_basement() -> void:
 	# Switch bg while black
 	_hide_all_bgs()
 	basement.visible = true
+	
+	if creaky_stairs_player:
+		creaky_stairs_player.stop()
+		creaky_stairs_player.queue_free()
+		creaky_stairs_player = null
 
 	await get_tree().create_timer(0.5).timeout
 
@@ -694,7 +717,19 @@ func _play_ending2_cutscene() -> void:
 		"res://assets/backgrounds/ending2_4.png"
 	]
 	
+	var running_player: AudioStreamPlayer
+	
 	for path in images:
+		if path == "res://assets/backgrounds/ending2_1.png":
+			running_player = _play_sfx("res://assets/sound/running.mp3")
+		elif path == "res://assets/backgrounds/ending2_3.png":
+			if running_player:
+				running_player.stop()
+				running_player.queue_free()
+			_play_sfx("res://assets/sound/knifestab.mp3")
+		elif path == "res://assets/backgrounds/ending2_4.png":
+			_play_sfx("res://assets/sound/thud.mp3")
+			
 		var tex = load(path)
 		if tex:
 			var tr = TextureRect.new()
@@ -715,6 +750,8 @@ func _play_freezer_cutscene() -> void:
 	cutscene_parent.name = "CutsceneParent"
 	cutscene_parent.set_anchors_preset(Control.PRESET_FULL_RECT)
 	$Backgrounds.add_child(cutscene_parent)
+	
+	var melonrip_player = _play_sfx("res://assets/sound/melonrip.mp3")
 	
 	var dir = DirAccess.open("res://assets/freezer-cutscene")
 	var final_files = []
@@ -738,6 +775,15 @@ func _play_freezer_cutscene() -> void:
 		)
 		
 		for file in final_files:
+			if file == "freezer_4.png":
+				_play_sfx("res://assets/sound/freezer-open.mp3")
+			elif file == "freezer_8.png":
+				_play_sfx("res://assets/sound/jumpscare.mp3")
+			elif file == "freezer_9.png":
+				_play_sfx("res://assets/sound/rustle.mp3")
+			elif file == "freezer_13.png":
+				_play_sfx("res://assets/sound/freezer-close.mp3")
+				
 			var tex = load("res://assets/freezer-cutscene/" + file)
 			if tex:
 				var tr = TextureRect.new()
@@ -752,6 +798,19 @@ func _play_freezer_cutscene() -> void:
 				await tween.finished
 				
 				await get_tree().create_timer(freezer_frame_duration).timeout
+
+	if melonrip_player:
+		melonrip_player.stop()
+		melonrip_player.queue_free()
+
+func _play_sfx(path: String) -> AudioStreamPlayer:
+	var player = AudioStreamPlayer.new()
+	player.stream = load(path)
+	player.bus = "SFX"
+	add_child(player)
+	player.play()
+	player.finished.connect(player.queue_free)
+	return player
 
 func _bob_character(node: TextureRect) -> void:
 	var tween = create_tween().set_loops(3)
